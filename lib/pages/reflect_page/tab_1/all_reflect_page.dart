@@ -1,8 +1,10 @@
+import 'package:dothithongminh_user/constants/constant.dart';
 import 'package:dothithongminh_user/constants/icon_text.dart';
 import 'package:dothithongminh_user/constants/utils.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/controller/reflect_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
+import 'package:dothithongminh_user/pages/reflect_page/detail_reflect_page/detail_reflect_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -34,16 +36,19 @@ class _AllReflectPageState extends State<AllReflectPage> {
                 query: ref,
                 itemBuilder: (context, snapshot, index, animation) {
 
+                  final key = snapshot.key.toString();
+
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
                   final category = snapshot.child("category").value.toString();
                   final handle = snapshot.child("handle").value as int;
-                  final accept = snapshot.child("accept").value.toString();
+                  final accept = snapshot.child("accept").value as bool;
                   final address = snapshot.child("address").value.toString();
                   final email = snapshot.child("email").value.toString();
-
+                  final contentfeedback = snapshot.child("contentfeedback").value.toString();
                   final timestamp = snapshot.child("createdAt").value as int;
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+                  // print(dateTime);
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
@@ -51,6 +56,33 @@ class _AllReflectPageState extends State<AllReflectPage> {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
                       child: InkWell(
+                        onTap: () {
+                          ReflectModel reflectModel = ReflectModel(
+                            id: key,
+                            email: email,
+                            title: title,
+                            category: category,
+                            content: content,
+                            content_response: contentfeedback,
+                            address: address,
+                            media: images,
+                            accept: accept,
+                            handle: handle,
+                            createdAt: dateTime,
+                          );
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              // builder: (context) => GetReflects2(id: key.toString()),
+                              builder: (context) => DetailReflectPage(reflect: reflectModel),
+
+                            ),
+                          ).then((value) {
+                            setState(() {});
+                          });
+                          print("Key: $key");
+                        },
                         child: Container(
                           height: 125,
                           decoration: BoxDecoration(
@@ -192,50 +224,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
           ],
         ),
       ),
-      // body: Column(
-      //   children: [
-      //     Expanded(
-      //       child: FirebaseAnimatedList(
-      //         query: ref,
-      //         itemBuilder: (context, snapshot, index, animation) {
-      //           final category = snapshot.child("category").value.toString();
-      //           final handle = snapshot.child("handle").value.toString();
-      //           final accept = snapshot.child("accept").value.toString();
-      //           final address = snapshot.child("address").value.toString();
-      //           final email = snapshot.child("email").value.toString();
-      //
-      //           final timestamp = snapshot.child("createdAt").value as int;
-      //           final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-      //           final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
-      //           final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
-      //
-      //           return Container(
-      //             child: Column(
-      //               children: [
-      //                 Text("Title: ${category}"),
-      //                 Text("Handle: ${handle}"),
-      //                 Text("Accept: ${accept}"),
-      //                 Text("Address: ${address}"),
-      //                 Text("Time: $dateTime"),
-      //                 Text("Email: $email"),
-      //
-      //                 if (images != null)
-      //                   SizedBox(
-      //                     height: 200,
-      //                     child: Image.network(
-      //                       images[0].toString(),
-      //                       width: 150, // Độ rộng của mỗi hình ảnh
-      //                       fit: BoxFit.cover,
-      //                     ),
-      //                 ), // In ra link ảnh
-      //               ],
-      //             )
-      //           );
-      //         },
-      //       ),
-      //     )
-      //   ],
-      // ),
+
     );
   }
 }

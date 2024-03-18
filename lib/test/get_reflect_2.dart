@@ -4,6 +4,7 @@ import 'package:dothithongminh_user/constants/icon_text.dart';
 import 'package:dothithongminh_user/constants/utils.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
+import 'package:dothithongminh_user/pages/reflect_page/image_reflect/list_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,12 @@ class _GetReflects2State extends State<GetReflects2> {
       body: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
-          print(widget.reflect.title);
+          final date = widget.reflect.createdAt;
+          final formattedDateTime = "${date!.day}/${date!.month}/${date!.year}";
+
+          print("Ngày tháng năm: $formattedDateTime");
+          print("title: ${widget.reflect.title}");
+
           return Padding(
             padding: EdgeInsets.only(left: 16, right: 16, top: 10),
             child: Column(
@@ -57,49 +63,97 @@ class _GetReflects2State extends State<GetReflects2> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            iconAndText(
-                              textStyle: TextStyle(
-                                  fontSize: 18, color: Colors.green
-                              ),
-                              title: widget.reflect.category!,
-                              icon: Icons.menu,
-                            ),
-                            widget.reflect.handle == 1
-                                ? Text(
-                                "Đang xử lý",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.red
-                                )
-                            )
-                                : widget.reflect.handle == 0
-                                ? Text(
-                                "Đã xử lý",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.green
-                                )
-                            )
-                                : Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.red
-                                )
-                            ),
-                          ]
+                      iconAndText(
+                        textStyle: TextStyle(
+                            fontSize: 18, color: Colors.green
+                        ),
+                        title: widget.reflect.category!,
+                        icon: Icons.menu,
                       ),
-                      SizedBox(height: 10,),
-                      Text(
-                        "${widget.reflect.title}",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                      widget.reflect.handle == 1
+                          ? Text(
+                          "Đang xử lý",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.red
+                          )
+                      )
+                          : widget.reflect.handle == 0
+                          ? Text(
+                          "Đã xử lý",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.green
+                          )
+                      )
+                          : Text(
+                          "",
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.red
+                          )
                       ),
                     ]
                 ),
+                SizedBox(height: 10,),
+                Text(
+                  "${widget.reflect.title}",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Icon(Icons.map),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: widget.reflect.address == ''
+                          ? Text(
+                        'B301',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        maxLines: 2,
+                      )
+                          : Text(
+                        '${widget.reflect.address}',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        maxLines: 5,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    Icon(Icons.calendar_month,),
+                    SizedBox(width: 10,),
+                    Text(
+                        formattedDateTime,
+                        style: TextStyle(
+                          fontSize: 16,
+                        )
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10,),
+                widget.reflect.media!.length == 0
+                    ? SizedBox()
+                    : ZoomImage(images: widget.reflect.media),
+                SizedBox(height: 10,),
+
+                Container(
+                  child: Text(
+                    "${widget.reflect.content}",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                SizedBox(height: 10,),
               ],
             ),
           );
