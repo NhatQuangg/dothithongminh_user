@@ -63,7 +63,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                           textStyle: TextStyle(
                               fontSize: 18, color: Colors.green
                           ),
-                          title: widget.reflect.category!,
+                          title: widget.reflect.id_category!,
                           icon: Icons.menu,
                         ),
                         widget.reflect.handle == 1

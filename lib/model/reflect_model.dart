@@ -3,9 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 
 class ReflectModel {
   final String? id;
-  final String? email;
+  final String? id_user;
   final String? title;
-  final String? category;
+  final String? id_category;
   final String? content;
   final String? content_response;
   final String? address;
@@ -16,14 +16,15 @@ class ReflectModel {
   final bool? accept;
   final int? handle;
   final DateTime? createdAt;
-  // final Timestamp? createdAt;
+
+  // final String? id_category;
 
   const ReflectModel({
     this.id,
-    required this.email,
+    required this.id_user,
     // required this.likes,
     required this.title,
-    required this.category,
+    required this.id_category,
     required this.content,
     required this.address,
     required this.media,
@@ -35,9 +36,9 @@ class ReflectModel {
 
   toJson() {
     return {
-      "email": email,
+      "id_user": id_user,
       "title": title,
-      "category": category,
+      "category": id_category,
       "content": content,
       "address": address,
       "media": media,
@@ -55,9 +56,9 @@ class ReflectModel {
     final data = document.data()!;
     return ReflectModel(
         id: document.id,
-        email: data["email"],
+        id_user: data["id_user"],
         title: data["title"],
-        category: data["category"],
+        id_category: data["id_category"],
         content: data["content"],
         address: data["address"],
         media: data["media"],
@@ -73,9 +74,9 @@ class ReflectModel {
     final data = entry.value as Map<String, dynamic>;
     return ReflectModel(
       id: entry.key,
-      email: data["email"],
+      id_user: data["id_user"],
       title: data["title"],
-      category: data["category"],
+      id_category: data["id_category"],
       content: data["content"],
       address: data["address"],
       media: List<dynamic>.from(data["media"] ?? []),
@@ -90,9 +91,9 @@ class ReflectModel {
 
   factory ReflectModel.fromRTDB(Map<String, dynamic> data) {
     return ReflectModel(
-      email: data["email"],
+      id_user: data["id_user"],
       title: data["title"],
-      category: data["category"],
+      id_category: data["id_category"],
       content: data["content"],
       address: data["address"],
       media: List<dynamic>.from(data["media"] ?? []),

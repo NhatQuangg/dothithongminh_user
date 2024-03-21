@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dothithongminh_user/constants/global.dart';
 import 'package:dothithongminh_user/pages/home_page/components/home_controller.dart';
 import 'package:dothithongminh_user/pages/reflect_page/reflect_page.dart';
 import 'package:dothithongminh_user/test/get_reflect.dart';
@@ -132,7 +133,7 @@ class HomeBody extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GetReflects(),
+                      builder: (context) => GetReflects2(),
                     )
                 );
                 print('5');

@@ -31,9 +31,9 @@ class UserRepository extends GetxController {
 
   createUserDetail(UserModel user) async {
     await _db.collection("Users").doc(user.email).set({
-      "fullName": user.fullName,
+      "fullname": user.fullname,
       "email": user.email,
-      "phone": user.phoneNo,
+      "phone": user.phone,
       "password": user.password,
       "level": user.level
     });
@@ -76,7 +76,6 @@ class UserRepository extends GetxController {
       print("Day la email: $email");
 
       final query = await _rd.ref("Users").orderByChild("email").equalTo(email).once();
-
 
       final snapshot = query.snapshot.children.first;
       return UserModel.fromRealtimeDatabase(snapshot);

@@ -59,9 +59,9 @@ class _AllReflectPageState extends State<AllReflectPage> {
                         onTap: () {
                           ReflectModel reflectModel = ReflectModel(
                             id: key,
-                            email: email,
+                            id_user: email,
                             title: title,
-                            category: category,
+                            id_category: category,
                             content: content,
                             content_response: contentfeedback,
                             address: address,

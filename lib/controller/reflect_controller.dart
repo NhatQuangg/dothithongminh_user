@@ -124,57 +124,57 @@ class ReflectController extends GetxController {
     return await _reflectRepo.allReflectActive(2);
   }
 
-  static Future updateRef(ReflectModel reflect) async {
-    final reflectCollection = FirebaseFirestore.instance.collection("Reflects");
-
-    final docRef = reflectCollection.doc(reflect.id);
-
-    final newReflect = ReflectModel(
-        email: reflect.email,
-        title: reflect.title,
-        category: reflect.category,
-        content: reflect.content,
-        address: reflect.address,
-        media: reflect.media,
-        accept: reflect.accept,
-        handle: reflect.handle,
-        createdAt: reflect.createdAt,
-        // likes: reflect.likes,
-        content_response: reflect.content_response)
-        .toJson();
-
-    try {
-      await docRef.update(newReflect);
-    } catch (e) {
-      print("some error $e");
-    }
-  }
-
-  static Future updateLikesRef(ReflectModel reflect) async {
-    final reflectCollection = FirebaseFirestore.instance.collection("Reflects");
-
-    final docRef = reflectCollection.doc(reflect.id);
-
-    final newReflect = ReflectModel(
-        email: reflect.email,
-        title: reflect.title,
-        category: reflect.category,
-        content: reflect.content,
-        address: reflect.address,
-        media: reflect.media,
-        accept: reflect.accept,
-        handle: reflect.handle,
-        createdAt: reflect.createdAt,
-        // likes: reflect.likes,
-        content_response: reflect.content_response)
-        .toJson();
-
-    try {
-      await docRef.update(newReflect);
-    } catch (e) {
-      print("some error $e");
-    }
-  }
+  // static Future updateRef(ReflectModel reflect) async {
+  //   final reflectCollection = FirebaseFirestore.instance.collection("Reflects");
+  //
+  //   final docRef = reflectCollection.doc(reflect.id);
+  //
+  //   final newReflect = ReflectModel(
+  //       email: reflect.email,
+  //       title: reflect.title,
+  //       category: reflect.category,
+  //       content: reflect.content,
+  //       address: reflect.address,
+  //       media: reflect.media,
+  //       accept: reflect.accept,
+  //       handle: reflect.handle,
+  //       createdAt: reflect.createdAt,
+  //       // likes: reflect.likes,
+  //       content_response: reflect.content_response)
+  //       .toJson();
+  //
+  //   try {
+  //     await docRef.update(newReflect);
+  //   } catch (e) {
+  //     print("some error $e");
+  //   }
+  // }
+  //
+  // static Future updateLikesRef(ReflectModel reflect) async {
+  //   final reflectCollection = FirebaseFirestore.instance.collection("Reflects");
+  //
+  //   final docRef = reflectCollection.doc(reflect.id);
+  //
+  //   final newReflect = ReflectModel(
+  //       email: reflect.email,
+  //       title: reflect.title,
+  //       category: reflect.category,
+  //       content: reflect.content,
+  //       address: reflect.address,
+  //       media: reflect.media,
+  //       accept: reflect.accept,
+  //       handle: reflect.handle,
+  //       createdAt: reflect.createdAt,
+  //       // likes: reflect.likes,
+  //       content_response: reflect.content_response)
+  //       .toJson();
+  //
+  //   try {
+  //     await docRef.update(newReflect);
+  //   } catch (e) {
+  //     print("some error $e");
+  //   }
+  // }
 
   static Future likesPost(String id) async {
     final idemail = getEmail();

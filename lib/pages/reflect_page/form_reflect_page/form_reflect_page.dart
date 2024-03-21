@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dothithongminh_user/constants/constant.dart';
 import 'package:dothithongminh_user/constants/global.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
@@ -13,6 +13,7 @@ import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/crud_reflect
 import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/full_screen_widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -41,7 +42,7 @@ class FormReflectPageState extends State<FormReflectPage> {
 
   String? authorName, title, desc;
   CrudReflect crudReflect = new CrudReflect();
-  QuerySnapshot? refSnapshot;
+  // QuerySnapshot? refSnapshot;
   bool accept = false;
   String? url;
   File? image;
@@ -57,6 +58,8 @@ class FormReflectPageState extends State<FormReflectPage> {
   String slectedFileName = "";
   String defaultImageUrl =
       'https://hanoispiritofplace.com/wp-content/uploads/2014/08/hinh-nen-cac-loai-chim-dep-nhat-1-1.jpg';
+
+  Query ref = FirebaseDatabase.instance.ref().child("Category");
 
   Future getImage() async {
     try {
@@ -184,9 +187,11 @@ class FormReflectPageState extends State<FormReflectPage> {
 
   final controller = Get.put(ReflectController());
 
+
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -230,9 +235,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
+                          const SizedBox(height: 10,),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             child: Column(
@@ -286,8 +289,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                                         hint: Transform.translate(
                                           offset: Offset(-10, 0),
                                           child: Text(
-                                            selectNameCategory ??
-                                                listCategory[0],
+                                            selectNameCategory ?? listCategory[0],
                                             style: const TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black),
@@ -295,36 +297,33 @@ class FormReflectPageState extends State<FormReflectPage> {
                                         ),
                                         items: listCategory
                                             .map((item) =>
-                                                DropdownMenuItem<String>(
-                                                  value: item,
-                                                  child: Transform.translate(
-                                                    offset:
-                                                        const Offset(-10, 0),
-                                                    child: Text(
-                                                      item,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
+                                            DropdownMenuItem<String>(
+                                              value: item,
+                                              child: Transform.translate(
+                                                offset:
+                                                const Offset(-10, 0),
+                                                child: Text(
+                                                  item,
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
                                                   ),
-                                                ))
+                                                ),
+                                              ),
+                                            ))
                                             .toList(),
                                         value: selectNameCategory,
                                         onChanged: (value) {
                                           setState(() {
-                                            selectNameCategory =
-                                                value as String?;
+                                            selectNameCategory = value as String?;
                                             if (value == listCategory[0]) {
-                                              selectNameCategory =
-                                                  listCategory[0];
+                                              selectNameCategory = listCategory[0];
                                             }
                                             if (value == listCategory[1]) {
-                                              selectNameCategory =
-                                                  listCategory[1];
+                                              selectNameCategory = listCategory[1];
                                             }
                                             if (value == listCategory[2]) {
                                               selectNameCategory =
-                                                  listCategory[2];
+                                              listCategory[2];
                                             }
                                           });
                                         },
@@ -504,29 +503,13 @@ class FormReflectPageState extends State<FormReflectPage> {
                                                 children: [
                                                   Platform.isIOS
                                                       ? Container(
-                                                          height: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2 -
-                                                              30,
-                                                          width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2 -
-                                                              30,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          199,
-                                                                          202,
-                                                                          204)),
+                                                          height: MediaQuery.of(context).size.width / 2 - 30,
+                                                          width: MediaQuery.of(context).size.width / 2 - 30,
+                                                          decoration: BoxDecoration(
+                                                              color: Color.fromARGB(255, 199, 202, 204)
+                                                          ),
                                                           child: Icon(
-                                                            Icons
-                                                                .video_collection,
+                                                            Icons.video_collection,
                                                             color: Colors.white,
                                                             size: 30,
                                                           ),
@@ -586,9 +569,9 @@ class FormReflectPageState extends State<FormReflectPage> {
 
                                             final reflect = ReflectModel(
                                                 content_response: '',
-                                                email: getEmail(),
+                                                id_user: getId_Users(),
                                                 title: controller.title.text.trim(),
-                                                category: selectNameCategory,
+                                                id_category: selectNameCategory,
                                                 content: controller.content.text.trim(),
                                                 address: controller.address.text.trim(),
                                                 media: urls,

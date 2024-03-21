@@ -261,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   UserModel user = snapshot.data as UserModel;
                   currentPasswordd = user.password ?? "";
 
-                  print("email: ${user.email} , ${user.fullName}, ${user.id}");
+                  print("email: ${user.email} , ${user.fullname}, ${user.id}");
                   return Column(
                     children: [
                       const SizedBox(
@@ -298,7 +298,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       // fullname
                       MyTextBox(
-                        text: user.fullName ?? "",
+                        text: user.fullname ?? "",
                         sectionName: 'fullname',
                         onPressed: () =>
                             editField('fullName', user.id.toString()),
@@ -307,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       // phone
                       MyTextBox(
-                        text: user.phoneNo ?? "",
+                        text: user.phone ?? "",
                         sectionName: 'phone',
                         onPressed: () => editField('phone', user.id.toString()),
                         obscureText: false,

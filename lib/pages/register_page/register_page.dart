@@ -66,9 +66,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 password: controller.password.text.trim());
 
         final user = UserModel(
-          fullName: controller.fullName.text.trim(),
+          fullname: controller.fullName.text.trim(),
           email: controller.email.text.trim(),
-          phoneNo: controller.phoneNo.text.trim(),
+          phone: controller.phoneNo.text.trim(),
           password: controller.password.text.trim(),
           level: levelUser,
         );
@@ -92,7 +92,6 @@ class _RegisterPageState extends State<RegisterPage> {
             );
         });
 
-        // databaseReference.push().set(user.toJson());
 
         RegisterController.instance.createUserRD(user);
 

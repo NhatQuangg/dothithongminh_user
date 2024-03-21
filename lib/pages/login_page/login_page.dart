@@ -55,8 +55,7 @@ class _LoginPageState extends State<LoginPage> {
           //   });
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
-        // Navigator.pop(context);
-        // Navigator.of(context).pop();
+
         Future.delayed(const Duration(seconds: 0), () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => AuthPage()),
@@ -245,30 +244,30 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 50),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                          PageTransition(
-                            type: PageTransitionType
-                                .rightToLeft, // Animation direction
-                            child: TestRealTime(), // Your next page widget
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Test Real Time',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
-                        ),
-                      ),
-                    )
-                  ],
-                )
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     GestureDetector(
+                //       onTap: () {
+                //         Navigator.of(context).pushReplacement(
+                //           PageTransition(
+                //             type: PageTransitionType
+                //                 .rightToLeft, // Animation direction
+                //             child: TestRealTime(), // Your next page widget
+                //           ),
+                //         );
+                //       },
+                //       child: Text(
+                //         'Test Real Time',
+                //         style: TextStyle(
+                //             color: Colors.black,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 20
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // )
               ],
             ),
           ),

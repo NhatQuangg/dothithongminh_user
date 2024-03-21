@@ -3,17 +3,17 @@ import 'package:firebase_database/firebase_database.dart';
 
 class UserModel {
   final String? id;
-  final String? fullName;
+  final String? fullname;
   final String? email;
-  final String? phoneNo;
+  final String? phone;
   final String? password;
   final String? level;
 
   const UserModel({
     this.id,
-    required this.fullName,
+    required this.fullname,
     required this.email,
-    required this.phoneNo,
+    required this.phone,
     required this.password,
     required this.level,
   });
@@ -22,9 +22,9 @@ class UserModel {
   // Dùng để lưu trữ data vào Cloud FireStore
   toJson() {
     return {
-      "fullName": fullName,
+      "fullname": fullname,
       "email": email,
-      "phone": phoneNo,
+      "phone": phone,
       "password": password,
       "level": level
     };
@@ -34,9 +34,9 @@ class UserModel {
     final data = document.data()!;
     return UserModel(
         id: document.id,
-        fullName: data["fullName"],
+        fullname: data["fullname"],
         email: data["email"],
-        phoneNo: data["phone"],
+        phone: data["phone"],
         password: data["password"],
         level: data["level"]);
   }
@@ -45,9 +45,9 @@ class UserModel {
     final data = snapshot.value as Map<dynamic, dynamic>;
     return UserModel(
       id: snapshot.key,
-      fullName: data["fullName"],
+      fullname: data["fullname"],
       email: data["email"],
-      phoneNo: data["phone"],
+      phone: data["phone"],
       password: data["password"],
       level: data["level"],
     );
