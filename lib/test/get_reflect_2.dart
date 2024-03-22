@@ -4,6 +4,7 @@
   import 'package:dothithongminh_user/constants/utils.dart';
   import 'package:dothithongminh_user/controller/category_controller.dart';
   import 'package:dothithongminh_user/controller/profile_controller.dart';
+import 'package:dothithongminh_user/controller/reflect_controller.dart';
   import 'package:dothithongminh_user/model/category__model.dart';
   import 'package:dothithongminh_user/model/reflect_model.dart';
   import 'package:dothithongminh_user/pages/reflect_page/image_reflect/list_image.dart';
@@ -21,209 +22,76 @@
   }
 
   class _GetReflects2State extends State<GetReflects2> {
-    // final ref = FirebaseDatabase.instance.ref("Reflects");
-    String a = getEmail();
-    final controller = Get.put(CategoryController());
-    final reff = FirebaseDatabase.instance.ref().child("Category");
-    List<String> listCategory = ['Giáo dục', 'An ninh', 'Cơ sở vật chất'];
-    String? selectNameCategory;
-    String? selectedCategory;
-    List<String> categories = [];
-
-    List<String> categoryKeys = [];
-    String? selectedCategoryKey;
-
-    // @override
-    // void initState() {
-    //   super.initState();
-    //   reff.onValue.listen((event) {
-    //     final snapshot = event.snapshot;
-    //     final values = snapshot.value;
-    //     final id = snapshot.key;
-    //     if (values != null) {
-    //       setState(() {
-    //         categories = (values as Map<dynamic, dynamic>).values.map((e) => e['category_name'] as String).toList();
-    //         if (categories.isNotEmpty) {
-    //           selectedCategory = categories.first;
-    //         }
-    //       });
-    //     }
-    //   });
-    // }
-
-    @override
-    void initState() {
-      super.initState();
-      reff.onValue.listen((event) {
-        final snapshot = event.snapshot;
-        final values = snapshot.value;
-        if (values != null) {
-          setState(() {
-            categories = (values as Map<dynamic, dynamic>).values.map((e) => e['category_name'] as String).toList();
-            categoryKeys = (values as Map<dynamic, dynamic>).keys.cast<String>().toList();
-            if (categories.isNotEmpty) {
-              selectedCategoryKey = categoryKeys.first;
-            }
-          });
-        }
-      });
-    }
+    final controller = Get.put(ReflectController());
+    final controllerProfile = Get.put(ProfileController());
+    final categoryController = Get.put(CategoryController());
+    List<dynamic> dataList = [];
+    final ref = FirebaseDatabase.instance.ref("Reflects");
 
     @override
     Widget build(BuildContext context) {
-
       return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            iconSize: 25,
-          ),
-          iconTheme: IconThemeData(color: Colors.white),
-          title: Text(
-            'GETT ${a}',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: mainColor,
-          centerTitle: true,
-        ),
-        body: Container(
-          margin: EdgeInsets.symmetric(horizontal: 16),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Container(
-                margin: EdgeInsets.zero,
-                padding: EdgeInsets.fromLTRB(25, 0, 10, 0),
-                height: 55,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(width: 1, color: Colors.grey),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    isExpanded: true,
-                    value: selectedCategoryKey,
-                    onChanged: (String? value) {
-                      setState(() {
-                        selectedCategoryKey = value;
-                        print(selectedCategoryKey);
-                      });
-                    },
-                    items: categories.asMap().entries.map((entry) {
-                      return DropdownMenuItem<String>(
-                        value: categoryKeys[entry.key],
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(entry.value),
+              Expanded(
+                child: FirebaseAnimatedList(
+                  query: ref,
+                  itemBuilder: (context, snapshot, index, animation) {
+
+                    final key = snapshot.key.toString();
+
+                    final id_category = snapshot.child("id_category").value.toString();
+
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Slidable(
+                        child: InkWell(
+                          onTap: () {
+                            print("Key: $key");
+                          },
+                          child: Container(
+                            height: 125,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 6,
+                                  color: Color(0x34000000),
+                                  offset: Offset(0, 3),
+                                )
+                              ],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                FutureBuilder<String>(
+                                  future: categoryController.getCategoryNameById(id_category),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                                    }
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                    }
+                                    return Text(snapshot.data ?? 'Unknown'); // Hiển thị tên danh mục
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  },
                 ),
-              ),
+              )
             ],
           ),
         ),
 
-        // body: Container(
-        //   margin: EdgeInsets.symmetric(horizontal: 16),
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       SizedBox(height: 20,),
-        //       Container(
-        //         margin: EdgeInsets.zero,
-        //         padding: EdgeInsets.fromLTRB(25, 0, 10, 0),
-        //         height: 55,
-        //         decoration: BoxDecoration(
-        //             borderRadius: BorderRadius.circular(5),
-        //             border: Border.all(width: 1, color: Colors.grey)
-        //         ),
-        //         child: DropdownButtonHideUnderline(
-        //           child: Padding(
-        //             padding: EdgeInsets.zero,
-        //             child: DropdownButton(
-        //               isExpanded: true,
-        //               hint: Transform.translate(
-        //                 offset: Offset(-10, 0),
-        //                 child: Text(
-        //                   selectNameCategory ?? listCategory[0],
-        //                   style: const TextStyle(
-        //                       fontSize: 14,
-        //                       color: Colors.black),
-        //                 ),
-        //               ),
-        //               items: listCategory.map((item) =>
-        //                   DropdownMenuItem<String>(
-        //                     value: item,
-        //                     child: Transform.translate(
-        //                       offset: const Offset(-10, 0),
-        //                       child: Text(
-        //                         item,
-        //                         style: const TextStyle(
-        //                           fontSize: 14,
-        //                         ),
-        //                       ),
-        //                     ),
-        //                   ))
-        //                   .toList(),
-        //               value: selectNameCategory,
-        //               onChanged: (value) {
-        //                 setState(() {
-        //                   selectNameCategory = value as String?;
-        //                   if (value == listCategory[0]) {
-        //                     selectNameCategory =
-        //                     listCategory[0];
-        //                   }
-        //                   if (value == listCategory[1]) {
-        //                     selectNameCategory =
-        //                     listCategory[1];
-        //                   }
-        //                   if (value == listCategory[2]) {
-        //                     selectNameCategory =
-        //                     listCategory[2];
-        //                   }
-        //                 });
-        //               },
-        //             ),
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // )
-
-        // body: FirebaseAnimatedList(
-        //   query: reff,
-        //   itemBuilder: (context, snapshot, animation, index) {
-        //     Map category = snapshot.value as Map;
-        //     category['key'] = snapshot.key;
-
-        //     // return Container(
-        //     //   margin: EdgeInsets.all(10),
-        //     //   padding: EdgeInsets.all(10),
-        //     //   height: 110,
-        //     //   color: Colors.blue,
-        //     //   child: Column(
-        //     //     mainAxisAlignment: MainAxisAlignment.center,
-        //     //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     //     children: [
-        //     //       Text('Index: $index'),
-        //     //       Text(category['key']),
-        //     //       Text(category['category_name'])
-        //     //     ],
-        //     //   ),
-        //     // );
-        //   },
-        // )
-
       );
-
     }
   }

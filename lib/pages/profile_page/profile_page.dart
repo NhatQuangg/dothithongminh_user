@@ -231,6 +231,19 @@ class _ProfilePageState extends State<ProfilePage> {
         .show(context);
   }
 
+  late String? userId;
+  Future<void> _getUserId() async {
+    String? id = await getId_Users();
+    setState(() {
+      userId = id;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    _getUserId();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,6 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (snapshot.hasData) {
                   UserModel user = snapshot.data as UserModel;
                   currentPasswordd = user.password ?? "";
+                  print("heh: $userId");
 
                   print("email: ${user.email} , ${user.fullname}, ${user.id}");
                   return Column(

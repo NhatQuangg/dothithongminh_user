@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,13 +30,27 @@ void inputUid() {
   // here you write the codes to input the data into firestore
 }
 
-getId_Users() {
+getId_Userss() {
   controller.getUserDataRD().then((userData) {
     if (userData != null) {
       UserModel user = userData!;
-      return user.id;
+      return user.id.toString();
     } else {
       print("Get ID User fail");
     }
   });
+}
+
+Future<String?> getId_Users() async {
+  final completer = Completer<String?>(); // Tạo một Completer
+
+  final UserModel? userData = await controller.getUserDataRD();
+  if (userData != null) {
+    completer.complete(userData.id); // Hoàn thành Completer với giá trị là userData.id
+  } else {
+    print("Get ID User fail");
+    completer.complete(null); // Hoàn thành Completer với giá trị null
+  }
+
+  return completer.future; // Trả về Future từ Completer
 }

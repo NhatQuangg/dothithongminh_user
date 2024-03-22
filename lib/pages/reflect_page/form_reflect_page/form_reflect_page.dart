@@ -59,7 +59,10 @@ class FormReflectPageState extends State<FormReflectPage> {
   String defaultImageUrl =
       'https://hanoispiritofplace.com/wp-content/uploads/2014/08/hinh-nen-cac-loai-chim-dep-nhat-1-1.jpg';
 
-  Query ref = FirebaseDatabase.instance.ref().child("Category");
+  final ref = FirebaseDatabase.instance.ref().child("Category");
+  List<String> categories = [];
+  List<String> categoryKeys = [];
+  String? selectedCategoryKey;
 
   Future getImage() async {
     try {
@@ -187,17 +190,36 @@ class FormReflectPageState extends State<FormReflectPage> {
 
   final controller = Get.put(ReflectController());
 
+  late String? userId;
+  Future<void> _getUserId() async {
+    String? id = await getId_Users();
+    setState(() {
+      userId = id;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
+    _getUserId();
+    ref.onValue.listen((event) {
+      final snapshot = event.snapshot;
+      final values = snapshot.value;
+      if (values != null) {
+        setState(() {
+          categories = (values as Map<dynamic, dynamic>).values.map((e) => e['category_name'] as String).toList();
+          categoryKeys = (values as Map<dynamic, dynamic>).keys.cast<String>().toList();
+          if (categories.isNotEmpty) {
+            selectedCategoryKey = categoryKeys.first;
+          }
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     print("CATEGOGY == ${selectNameCategory}");
-
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -286,45 +308,50 @@ class FormReflectPageState extends State<FormReflectPage> {
                                       padding: EdgeInsets.zero,
                                       child: DropdownButton(
                                         isExpanded: true,
-                                        hint: Transform.translate(
-                                          offset: Offset(-10, 0),
-                                          child: Text(
-                                            selectNameCategory ?? listCategory[0],
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black),
-                                          ),
-                                        ),
-                                        items: listCategory
-                                            .map((item) =>
-                                            DropdownMenuItem<String>(
-                                              value: item,
-                                              child: Transform.translate(
-                                                offset:
-                                                const Offset(-10, 0),
-                                                child: Text(
-                                                  item,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                  ),
+                                        // hint: Transform.translate(
+                                        //   offset: Offset(-10, 0),
+                                        //   child: Text(
+                                        //     selectNameCategory ?? listCategory[0],
+                                        //     style: const TextStyle(
+                                        //         fontSize: 14,
+                                        //         color: Colors.black),
+                                        //   ),
+                                        // ),
+                                        items: categories.asMap().entries.map((entry) {
+                                          return DropdownMenuItem<String>(
+                                            value: categoryKeys[entry.key],
+                                            child: Transform.translate(
+                                              offset: Offset(-10, 0),
+                                              child: Text(
+                                                entry.value,
+                                                style: TextStyle(
+                                                  fontSize: 14
                                                 ),
                                               ),
-                                            ))
-                                            .toList(),
-                                        value: selectNameCategory,
-                                        onChanged: (value) {
+                                            ),
+                                          );
+                                        }).toList(),
+                                        // items: listCategory
+                                        //     .map((item) =>
+                                        //     DropdownMenuItem<String>(
+                                        //       value: item,
+                                        //       child: Transform.translate(
+                                        //         offset:
+                                        //         const Offset(-10, 0),
+                                        //         child: Text(
+                                        //           item,
+                                        //           style: const TextStyle(
+                                        //             fontSize: 14,
+                                        //           ),
+                                        //         ),
+                                        //       ),
+                                        //     ))
+                                        //     .toList(),
+                                        value: selectedCategoryKey,
+                                        onChanged: (String? value) {
                                           setState(() {
-                                            selectNameCategory = value as String?;
-                                            if (value == listCategory[0]) {
-                                              selectNameCategory = listCategory[0];
-                                            }
-                                            if (value == listCategory[1]) {
-                                              selectNameCategory = listCategory[1];
-                                            }
-                                            if (value == listCategory[2]) {
-                                              selectNameCategory =
-                                              listCategory[2];
-                                            }
+                                            selectedCategoryKey = value;
+                                            print(selectedCategoryKey);
                                           });
                                         },
                                       ),
@@ -541,9 +568,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                                     ),
                                   ],
                                 ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
+                                const SizedBox(height: 30,),
                                 Center(
                                   child: SizedBox(
                                     height: 50,
@@ -567,11 +592,13 @@ class FormReflectPageState extends State<FormReflectPage> {
                                             });
                                             await uploadImages();
 
+                                            print("day la id: ${userId}");
+
                                             final reflect = ReflectModel(
                                                 content_response: '',
-                                                id_user: getId_Users(),
+                                                id_user: userId,
                                                 title: controller.title.text.trim(),
-                                                id_category: selectNameCategory,
+                                                id_category: selectedCategoryKey,
                                                 content: controller.content.text.trim(),
                                                 address: controller.address.text.trim(),
                                                 media: urls,
@@ -586,13 +613,9 @@ class FormReflectPageState extends State<FormReflectPage> {
                                                 .then((value) {
                                               AnimatedSnackBar.material(
                                                 'Đăng phản ánh thành công!',
-                                                type: AnimatedSnackBarType
-                                                    .success,
-                                                duration:
-                                                Duration(milliseconds: 1),
-                                                mobileSnackBarPosition:
-                                                MobileSnackBarPosition
-                                                    .bottom,
+                                                type: AnimatedSnackBarType.success,
+                                                duration: Duration(milliseconds: 1),
+                                                mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                               ).show(context);
 
                                               controller.title.text = '';

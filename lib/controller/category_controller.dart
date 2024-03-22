@@ -23,13 +23,6 @@ class CategoryController extends GetxController {
 
   @override
 
-  // Future<CategoryModel?> getAllCategory() async {
-  //   final a = _cateRepo.getAllCategory();
-  //   if (a != null) {
-  //     print("haaaa");
-  //   }
-  //   return _cateRepo.getAllCategory();
-  // }
 
   Future<void> createReflectRD(ReflectModel reflect) async {
     await _reflectRepo.createReflectRD(reflect);
@@ -37,5 +30,9 @@ class CategoryController extends GetxController {
 
   Future<List<ReflectModel>> getAllReflectRD() async {
     return await _reflectRepo.getAllReflectRD();
+  }
+
+  Future<String> getCategoryNameById(String idCategory) async {
+    return await _cateRepo.getCategoryNameById(idCategory);
   }
 }

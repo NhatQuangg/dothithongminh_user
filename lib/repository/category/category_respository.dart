@@ -10,26 +10,26 @@ import 'package:get/get.dart';
 class CategoryRepository extends GetxController {
   static CategoryRepository get instance => Get.find();
 
-  // final _rd = FirebaseDatabase.instance;
 
-  // Future<CategoryModel?> getAllCategory() async {
-  //   CategoryModel? categoryModel;
-  //
-  //   try {
-  //     final databaseEvent = await FirebaseDatabase.instance.ref().child('Category').once();
-  //     final snapshot = databaseEvent.snapshot;
-  //
-  //     if (snapshot.value != null) {
-  //       categoryModel = CategoryModel.fromSnapshot(snapshot);
-  //       print("Categories retrieved successfully:");
-  //       print("Category Name: ${categoryModel.category_name}");
-  //     } else {
-  //       print("No category data found");
-  //     }
-  //   } catch (e) {
-  //     print("Error getting categories: $e");
-  //   }
-  //
-  //   return categoryModel; // R
-  // }
+
+  // final _rd = FirebaseDatabase.instance;
+  final DatabaseReference _database = FirebaseDatabase.instance.ref();
+
+  Future<String> getCategoryNameById(String idCategory) async {
+    String categoryName = "Unknown";
+    try {
+      DataSnapshot snapshot = await _database.child("Category").child(idCategory).get();
+      if (snapshot.value != null) {
+        Map<dynamic, dynamic>? categoryData = snapshot.value as Map<dynamic, dynamic>?; // Xác định kiểu dữ liệu của categoryData
+        if (categoryData != null) {
+          categoryName = categoryData["category_name"] ?? "Unknown"; // Sử dụng toán tử null-aware để tránh lỗi null
+        }
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+
+    return categoryName;
+  }
+
 }

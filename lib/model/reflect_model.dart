@@ -38,7 +38,7 @@ class ReflectModel {
     return {
       "id_user": id_user,
       "title": title,
-      "category": id_category,
+      "id_category": id_category,
       "content": content,
       "address": address,
       "media": media,

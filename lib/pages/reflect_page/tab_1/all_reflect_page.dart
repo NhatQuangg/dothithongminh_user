@@ -40,15 +40,14 @@ class _AllReflectPageState extends State<AllReflectPage> {
 
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
-                  final category = snapshot.child("category").value.toString();
+                  final id_category = snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
                   final accept = snapshot.child("accept").value as bool;
                   final address = snapshot.child("address").value.toString();
-                  final email = snapshot.child("email").value.toString();
+                  final id_user = snapshot.child("id_user").value.toString();
                   final contentfeedback = snapshot.child("contentfeedback").value.toString();
                   final timestamp = snapshot.child("createdAt").value as int;
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-                  // print(dateTime);
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
@@ -59,9 +58,9 @@ class _AllReflectPageState extends State<AllReflectPage> {
                         onTap: () {
                           ReflectModel reflectModel = ReflectModel(
                             id: key,
-                            id_user: email,
+                            id_user: id_user,
                             title: title,
-                            id_category: category,
+                            id_category: id_category,
                             content: content,
                             content_response: contentfeedback,
                             address: address,
@@ -187,7 +186,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                           iconAndText(
                                               textStyle: TextStyle(fontSize: 12),
                                               size: 12,
-                                              title: '${category}',
+                                              title: '${id_category}',
                                               icon: Icons.bookmark
                                           ),
                                           if (handle == 1)
