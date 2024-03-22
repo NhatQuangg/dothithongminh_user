@@ -1,6 +1,7 @@
 import 'package:dothithongminh_user/constants/constant.dart';
 import 'package:dothithongminh_user/constants/icon_text.dart';
 import 'package:dothithongminh_user/constants/utils.dart';
+import 'package:dothithongminh_user/controller/category_controller.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/controller/reflect_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
@@ -22,6 +23,8 @@ class AllReflectPage extends StatefulWidget {
 class _AllReflectPageState extends State<AllReflectPage> {
   final controller = Get.put(ReflectController());
   final controllerProfile = Get.put(ProfileController());
+  final categoryController = Get.put(CategoryController());
+
   List<dynamic> dataList = [];
   final ref = FirebaseDatabase.instance.ref("Reflects");
   @override
@@ -83,7 +86,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                           print("Key: $key");
                         },
                         child: Container(
-                          height: 125,
+                          height: 140,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
@@ -183,12 +186,29 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          iconAndText(
-                                              textStyle: TextStyle(fontSize: 12),
-                                              size: 12,
-                                              title: '${id_category}',
-                                              icon: Icons.bookmark
+                                          FutureBuilder<String>(
+                                            future: categoryController.getCategoryNameById(id_category),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                                              }
+                                              if (snapshot.hasError) {
+                                                return Text('Error: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                              }
+                                              return iconAndText(
+                                                textStyle: TextStyle(fontSize: 12),
+                                                size: 12,
+                                                title: "${snapshot.data}",
+                                                icon: Icons.bookmark
+                                              );
+                                            },
                                           ),
+                                          // iconAndText(
+                                          //     textStyle: TextStyle(fontSize: 12),
+                                          //     size: 12,
+                                          //     title: '${id_category}',
+                                          //     icon: Icons.bookmark
+                                          // ),
                                           if (handle == 1)
                                             Text(
                                               'Đang xử lý',

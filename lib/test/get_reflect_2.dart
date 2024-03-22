@@ -43,6 +43,7 @@ import 'package:dothithongminh_user/controller/reflect_controller.dart';
                     final key = snapshot.key.toString();
 
                     final id_category = snapshot.child("id_category").value.toString();
+                    final title = snapshot.child("title").value.toString();
 
 
                     return Padding(
@@ -67,6 +68,26 @@ import 'package:dothithongminh_user/controller/reflect_controller.dart';
                             ),
                             child: Row(
                               children: [
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Text(
+                                          '${title}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 FutureBuilder<String>(
                                   future: categoryController.getCategoryNameById(id_category),
                                   builder: (context, snapshot) {
