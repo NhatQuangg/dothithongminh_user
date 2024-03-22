@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dothithongminh_user/constants/global.dart';
 import 'package:dothithongminh_user/constants/icon_text.dart';
 import 'package:dothithongminh_user/constants/utils.dart';
+import 'package:dothithongminh_user/controller/category_controller.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/controller/reflect_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
@@ -37,6 +38,21 @@ class _ProcessingReflectUserPageState extends State<ProcessingReflectUserPage> {
   }
 
   final ref = FirebaseDatabase.instance.ref("Reflects");
+  final categoryController = Get.put(CategoryController());
+
+  late String? userId;
+  Future<void> _getUserId() async {
+    String? id = await getId_Users();
+    setState(() {
+      userId = id;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +67,20 @@ class _ProcessingReflectUserPageState extends State<ProcessingReflectUserPage> {
                 itemBuilder: (context, snapshot, index, animation) {
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
-                  final category = snapshot.child("category").value.toString();
+                  final id_category = snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
                   final accept = snapshot.child("accept").value.toString();
                   final address = snapshot.child("address").value.toString();
-                  final email = snapshot.child("email").value.toString();
+                  final id_user = snapshot.child("id_user").value.toString();
+                  print("id: ${id_user}");
+                  print("us: ${userId}");
 
                   final timestamp = snapshot.child("createdAt").value as int;
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
-                  if (email == myemail) {
+                  if (id_user == userId) {
                     if (handle == 0) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
@@ -86,7 +104,7 @@ class _ProcessingReflectUserPageState extends State<ProcessingReflectUserPage> {
                           ),
                           child: InkWell(
                             child: Container(
-                              height: 125,
+                              height: 140,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 boxShadow: [
@@ -186,11 +204,22 @@ class _ProcessingReflectUserPageState extends State<ProcessingReflectUserPage> {
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              iconAndText(
-                                                  textStyle: TextStyle(fontSize: 12),
-                                                  size: 12,
-                                                  title: '${category}',
-                                                  icon: Icons.bookmark
+                                              FutureBuilder<String>(
+                                                future: categoryController.getCategoryNameById(id_category),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                    return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                                                  }
+                                                  if (snapshot.hasError) {
+                                                    return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                                  }
+                                                  return iconAndText(
+                                                      textStyle: TextStyle(fontSize: 12),
+                                                      size: 12,
+                                                      title: "${snapshot.data}",
+                                                      icon: Icons.bookmark
+                                                  );
+                                                },
                                               ),
                                               if (handle == 1)
                                                 Text(

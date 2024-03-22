@@ -1,6 +1,7 @@
 
 import 'package:dothithongminh_user/constants/icon_text.dart';
 import 'package:dothithongminh_user/constants/utils.dart';
+import 'package:dothithongminh_user/controller/category_controller.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/controller/reflect_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
@@ -24,6 +25,8 @@ final ref = FirebaseDatabase.instance.ref("Reflects");
 class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
   final controller = Get.put(ReflectController());
   final controllerProfile = Get.put(ProfileController());
+  final categoryController = Get.put(CategoryController());
+
   List<dynamic> dataList = [];
 
   @override
@@ -40,7 +43,7 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
 
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
-                  final category = snapshot.child("category").value.toString();
+                  final id_category = snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
                   final accept = snapshot.child("accept").value.toString();
                   final address = snapshot.child("address").value.toString();
@@ -57,7 +60,7 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
                       child: Slidable(
                         child: InkWell(
                           child: Container(
-                            height: 125,
+                            height: 140,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -157,11 +160,22 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            iconAndText(
-                                                textStyle: TextStyle(fontSize: 12),
-                                                size: 12,
-                                                title: '${category}',
-                                                icon: Icons.bookmark
+                                            FutureBuilder<String>(
+                                              future: categoryController.getCategoryNameById(id_category),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                                                }
+                                                if (snapshot.hasError) {
+                                                  return Text('Error: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                                }
+                                                return iconAndText(
+                                                    textStyle: TextStyle(fontSize: 12),
+                                                    size: 12,
+                                                    title: "${snapshot.data}",
+                                                    icon: Icons.bookmark
+                                                );
+                                              },
                                             ),
                                             if (handle == 1)
                                               Text(

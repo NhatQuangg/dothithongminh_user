@@ -104,10 +104,10 @@ class _AllReflectPageState extends State<AllReflectPage> {
                             children: [
                               images != null
                                   ? Padding(
-                                padding: const EdgeInsets.only(left: 7),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Container(
-                                  width: 110,
-                                  height: 106,
+                                  width: 115,
+                                  height: 110,
                                   decoration: BoxDecoration(
                                     color: Colors.black,
                                     image: DecorationImage(
@@ -179,7 +179,6 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                   SizedBox(height: 2),
 
                                   Padding(
-                                    //padding: EdgeInsets.all(0),
                                     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width / 1.7,
@@ -193,7 +192,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                 return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
                                               }
                                               if (snapshot.hasError) {
-                                                return Text('Error: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                                return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
                                               }
                                               return iconAndText(
                                                 textStyle: TextStyle(fontSize: 12),
@@ -203,12 +202,6 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                               );
                                             },
                                           ),
-                                          // iconAndText(
-                                          //     textStyle: TextStyle(fontSize: 12),
-                                          //     size: 12,
-                                          //     title: '${id_category}',
-                                          //     icon: Icons.bookmark
-                                          // ),
                                           if (handle == 1)
                                             Text(
                                               'Đang xử lý',
