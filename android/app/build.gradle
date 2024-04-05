@@ -24,7 +24,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "n.quang.dothithongminh_user"
-    compileSdkVersion flutter.compileSdkVersion
+//    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {

@@ -195,10 +195,10 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                 return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
                                               }
                                               return iconAndText(
-                                                textStyle: TextStyle(fontSize: 12),
-                                                size: 12,
-                                                title: "${snapshot.data}",
-                                                icon: Icons.bookmark
+                                                  textStyle: TextStyle(fontSize: 12),
+                                                  size: 12,
+                                                  title: "${snapshot.data}",
+                                                  icon: Icons.bookmark
                                               );
                                             },
                                           ),

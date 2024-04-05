@@ -19,21 +19,11 @@ class AuthPage extends StatelessWidget {
           }
           else if (snapshot.hasData) {
             final user = snapshot.data!;
-            // print("chuyen qua trang home ${user.email!}");
             return HomePage();
           }
           else {
             return LoginPage();
           }
-          // if(snapshot.hasData) {
-          //   // user is logged in
-          //   print('chuyen qua trang home ' + user.email!);
-          //   return HomePage();
-          // }
-          // // user is not logged in
-          // else {
-          //   return LoginPage();
-          // }
         },
       ),
     );

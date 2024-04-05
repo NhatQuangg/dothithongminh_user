@@ -83,6 +83,7 @@ class VideoPlayerCustomState extends State<VideoPlayerCustom> {
               ),
             );
           } else {
+            print("THat bai r");
             return Container(
                 width: MediaQuery.of(context).size.width * 2 / 3,
                 decoration: BoxDecoration(

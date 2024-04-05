@@ -4,7 +4,6 @@ import 'package:dothithongminh_user/constants/my_textfield.dart';
 import 'package:dothithongminh_user/constants/square_tile.dart';
 import 'package:dothithongminh_user/pages/login_page/auth_page.dart';
 import 'package:dothithongminh_user/pages/register_page/register_page.dart';
-import 'package:dothithongminh_user/test/realtime.dart';
 import 'package:dothithongminh_user/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

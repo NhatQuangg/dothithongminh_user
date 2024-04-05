@@ -1,61 +1,92 @@
-import 'dart:io';
-
-import 'package:dothithongminh_user/model/reflect_model.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
-class tab1 extends StatefulWidget {
-  const tab1({super.key});
+class GeolocationApp extends StatefulWidget {
+  const GeolocationApp({super.key});
 
   @override
-  State<tab1> createState() => _tab1State();
+  State<GeolocationApp> createState() => _GeolocationAppState();
 }
 
-class _tab1State extends State<tab1> {
+class _GeolocationAppState extends State<GeolocationApp> {
+  Position? _currentLocation;
+  late bool servicePermission = false;
+  late LocationPermission permission;
 
+  String _currentAddress = "";
+  Future<Position> _getCurrentLocation() async {
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+    if (!servicePermission) {
+      print("service disabled");
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
 
-  List<ReflectModel> reflects = [];
+    return await Geolocator.getCurrentPosition();
+  }
+
+  _getAddressFromCoordinates() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentLocation!.latitude, _currentLocation!.longitude);
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentAddress = "${place.street} / ${place.locality} / ${place.administrativeArea} / ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
-  void initState() {
-    super.initState();
-    fetchReflectsFromFirebase();
-  }
-
-  void fetchReflectsFromFirebase() {
-    DatabaseReference reflectsRef = FirebaseDatabase.instance.ref().child('reflects');
-    reflectsRef.onValue.listen((event) {
-      dynamic data = event.snapshot.value;
-      if (data != null && data is Map<dynamic, dynamic>) {
-        List<ReflectModel> newReflects = [];
-        data.forEach((key, value) {
-          newReflects.add(ReflectModel.fromRTDB(value));
-        });
-        setState(() {
-          reflects = newReflects;
-        });
-      }
-    });
-  }
-
-  // @override
   Widget build(BuildContext context) {
-    final _rd = FirebaseDatabase.instance.ref();
-    fetchReflectsFromFirebase();
     return Scaffold(
       appBar: AppBar(
-        title: Text("test"),
+        title: Text("Get Location"),
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: reflects.length,
-        itemBuilder: (context, index) {
-          print("Day la: ${reflects[0].title}");
-          return ListTile(
-            title: Text(reflects[index].title ?? ''),
-            subtitle: Text(reflects[index].content ?? ''),
-            // Add more fields as needed
-          );
-        },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Location coordinates",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text(
+                "Latitude = ${_currentLocation?.latitude} ; Longtitude = ${_currentLocation?.longitude}"),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "Location Address",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text("${_currentAddress}"),
+            SizedBox(
+              height: 50,
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  _currentLocation = await _getCurrentLocation();
+                  await _getAddressFromCoordinates();
+                  print("${_currentLocation}");
+                  print("${_currentAddress}");
+                },
+                child: Text("Get Location"))
+          ],
+        ),
       ),
     );
   }

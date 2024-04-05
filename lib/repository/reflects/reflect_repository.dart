@@ -14,9 +14,9 @@ class ReflectRepository extends GetxController {
         .collection("Reflects")
         .add(reflect.toJson())
         .whenComplete(() => Get.snackbar("Success", "Reflect has been created",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green.withOpacity(0.1),
-            colorText: Colors.green))
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green.withOpacity(0.1),
+        colorText: Colors.green))
         .catchError((error, StackTrace) {
       Get.snackbar("Error", "Something went wrong. Try again",
           snackPosition: SnackPosition.BOTTOM,
@@ -33,7 +33,7 @@ class ReflectRepository extends GetxController {
   Future<List<ReflectModel>> allReflect() async {
     final snapshot = await _db.collection("Reflects").get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 
@@ -43,7 +43,7 @@ class ReflectRepository extends GetxController {
         .where("handle", isEqualTo: handle)
         .get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 
@@ -53,15 +53,15 @@ class ReflectRepository extends GetxController {
         .where("handle", isEqualTo: handle)
         .get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 
   Future<List<ReflectModel>> allReflectUser(String email) async {
     final snapshot =
-        await _db.collection("Reflects").where("email", isEqualTo: email).get();
+    await _db.collection("Reflects").where("email", isEqualTo: email).get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 
@@ -72,7 +72,7 @@ class ReflectRepository extends GetxController {
         .where("handle", isEqualTo: handle)
         .get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 
@@ -82,7 +82,7 @@ class ReflectRepository extends GetxController {
         .where("handle", isEqualTo: handle)
         .get();
     final reflectData =
-        snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
+    snapshot.docs.map((e) => ReflectModel.fromSnapshot(e)).toList();
     return reflectData;
   }
 

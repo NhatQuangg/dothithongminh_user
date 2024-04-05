@@ -20,17 +20,16 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final controller = Get.put(ProfileController());
-  final idemail = getEmail();
+  // final idemail = getEmail();
 
   final auth = FirebaseAuth.instance;
   // -------------------------------------------------------------
   // user
   final currentUser = FirebaseAuth.instance.currentUser!;
-
   var current = FirebaseAuth.instance.currentUser;
+
   // all users
   final usersCollection = FirebaseFirestore.instance.collection("Users");
-
   final currentPassword = FirebaseAuth.instance.currentUser!.email;
 
   final rd = FirebaseDatabase.instance;
@@ -77,11 +76,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       print("field moi: ${newValue}");
                       print("id: ${currentUser.uid}");
                       print("id RD: ${idUser}");
+
                       // update in firestore
                       if (newValue.trim().length > 0) {
-                        // await usersCollection
-                        //     .doc(idUser)
-                        //     .update({field: newValue});
 
                         await rd
                             .ref("Users")
@@ -180,12 +177,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             print("Loi: $e");
                           });
 
-                          print("3");
-
-                          // await usersCollection
-                          //     .doc(idUser)
-                          //     .update({field: newPass});
-
                           await rd
                               .ref("Users")
                               .child(idUser)
@@ -231,8 +222,8 @@ class _ProfilePageState extends State<ProfilePage> {
         .show(context);
   }
 
-  late String? userId;
   Future<void> _getUserId() async {
+    late String? userId;
     String? id = await getId_Users();
     setState(() {
       userId = id;
@@ -246,6 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
   
   @override
   Widget build(BuildContext context) {
+    print("hahahaha");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -273,23 +265,19 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (snapshot.hasData) {
                   UserModel user = snapshot.data as UserModel;
                   currentPasswordd = user.password ?? "";
-                  print("heh: $userId");
 
                   print("email: ${user.email} , ${user.fullname}, ${user.id}");
                   return Column(
                     children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
+                      const SizedBox(height: 40,),
 
                       // profile pic
                       const Icon(
                         Icons.person,
                         size: 90,
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+
+                      const SizedBox(height: 10,),
 
                       // user email
                       Text(
@@ -297,6 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.grey[800]),
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),

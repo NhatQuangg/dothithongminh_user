@@ -3,7 +3,6 @@ import 'package:dothithongminh_user/constants/global.dart';
 import 'package:dothithongminh_user/pages/home_page/components/home_controller.dart';
 import 'package:dothithongminh_user/pages/reflect_page/reflect_page.dart';
 import 'package:dothithongminh_user/test/get_reflect.dart';
-import 'package:dothithongminh_user/test/get_reflect_2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -130,12 +129,12 @@ class HomeBody extends StatelessWidget {
             SizedBox(width: 10),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GetReflects2(),
-                    )
-                );
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => GetReflects2(),
+                //     )
+                // );
                 print('5');
               },
               child: Column(
