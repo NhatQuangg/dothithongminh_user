@@ -14,6 +14,7 @@ class CategoryRepository extends GetxController {
 
   // final _rd = FirebaseDatabase.instance;
   final DatabaseReference _database = FirebaseDatabase.instance.ref();
+  final databaseReference = FirebaseDatabase.instance.ref();
 
   Future<String> getCategoryNameById(String idCategory) async {
     String categoryName = "Unknown";

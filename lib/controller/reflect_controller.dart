@@ -81,4 +81,13 @@ class ReflectController extends GetxController {
     return await _reflectRepo.getAllReflectRD();
   }
 
+  Future<void> addReflectModel(ReflectModel reflect) async {
+    return await _reflectRepo.addReflectModel(reflect);
+  }
+  Future<void> updateReflectModel(ReflectModel reflect) async {
+    return await _reflectRepo.updateReflectModel(reflect);
+  }
+  Future<void> deleteReflectModel(String id) async {
+    return await _reflectRepo.deleteReflectModel(id);
+  }
 }

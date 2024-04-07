@@ -7,7 +7,7 @@ class ReflectModel {
   final String? title;
   final String? id_category;
   final String? content;
-  final String? content_response;
+  final List<dynamic>? contentfeedback;
   final String? address;
   final List<dynamic>? media;
 
@@ -31,7 +31,7 @@ class ReflectModel {
     required this.accept,
     required this.handle,
     required this.createdAt,
-    required this.content_response,
+    required this.contentfeedback,
   });
 
   toJson() {
@@ -47,7 +47,7 @@ class ReflectModel {
       // "Likes": likes,
       // "createdAt": createdAt,
       "createdAt": createdAt?.millisecondsSinceEpoch,
-      "contentfeedback": content_response
+      "contentfeedback": contentfeedback
     };
   }
 
@@ -67,7 +67,7 @@ class ReflectModel {
         createdAt: DateTime.fromMillisecondsSinceEpoch(data["createdAt"]),
         // createdAt: data["createdAt"],
         // likes: data["Likes"],
-        content_response: data["contentresponse"]);
+        contentfeedback: data["contentresponse"]);
   }
 
   factory ReflectModel.fromRealtimeDatabase(MapEntry<String, dynamic> entry) {
@@ -85,7 +85,7 @@ class ReflectModel {
       createdAt: data['createdAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(data['createdAt'])
           : null,
-      content_response: data['contentfeedback'],
+      contentfeedback: data['contentfeedback'],
     );
   }
 
@@ -102,7 +102,7 @@ class ReflectModel {
       createdAt: (data['createdAt'] != null)
           ? DateTime.fromMicrosecondsSinceEpoch(data['createdAt'])
           : DateTime.now(),
-      content_response: data['contentfeedback'],
+      contentfeedback: data['contentfeedback'],
     );
   }
 }

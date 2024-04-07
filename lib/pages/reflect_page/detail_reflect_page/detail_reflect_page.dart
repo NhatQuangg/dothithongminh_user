@@ -1,11 +1,13 @@
 import 'package:dothithongminh_user/constants/constant.dart';
 import 'package:dothithongminh_user/constants/global.dart';
 import 'package:dothithongminh_user/constants/icon_text.dart';
+import 'package:dothithongminh_user/controller/category_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
 import 'package:dothithongminh_user/model/user_model.dart';
 import 'package:dothithongminh_user/pages/reflect_page/image_reflect/list_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DetailReflectPage extends StatefulWidget {
   final ReflectModel reflect;
@@ -20,6 +22,8 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
 
   final ref = FirebaseDatabase.instance.ref("Reflects");
   String email = getEmail();
+  final categoryController = Get.put(CategoryController());
+
   // ProfileController profileController = Get.find<ProfileController>();
 
   @override
@@ -46,9 +50,10 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
           itemBuilder: (context, index) {
             final date = widget.reflect.createdAt;
             final formattedDateTime = "${date!.day}/${date!.month}/${date!.year}";
-
+            final demo = widget.reflect.contentfeedback!;
             print("Ngày tháng năm: $formattedDateTime");
             print("title: ${widget.reflect.title}");
+
 
             return Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 10),
@@ -59,12 +64,22 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        iconAndText(
-                          textStyle: TextStyle(
-                              fontSize: 18, color: Colors.green
-                          ),
-                          title: widget.reflect.id_category!,
-                          icon: Icons.menu,
+                        FutureBuilder<String>(
+                          future: categoryController.getCategoryNameById(widget.reflect.id_category!),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                            }
+                            if (snapshot.hasError) {
+                              return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                            }
+                            return iconAndText(
+                              textStyle: TextStyle(fontSize: 18, color: Colors.green),
+                              size: 12,
+                              title: "${snapshot.data}",
+                              icon: Icons.menu,
+                            );
+                          },
                         ),
                         widget.reflect.handle == 1
                             ? Text(
@@ -150,6 +165,14 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                     ),
                   ),
                   SizedBox(height: 10,),
+
+                  // if (widget.reflect.contentfeedback!.isNotEmpty)
+                  //   ...widget.reflect.contentfeedback!.map((reflect) {
+                  //     return Text(reflect);
+                  //   })
+
+                  if (widget.reflect.contentfeedback!.isNotEmpty)
+                    Text(widget.reflect.contentfeedback![0])
                 ],
               ),
             );

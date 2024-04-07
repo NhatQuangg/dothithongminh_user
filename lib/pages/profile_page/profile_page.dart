@@ -20,32 +20,20 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final controller = Get.put(ProfileController());
-  // final idemail = getEmail();
-
-  final auth = FirebaseAuth.instance;
-  // -------------------------------------------------------------
-  // user
   final currentUser = FirebaseAuth.instance.currentUser!;
-  var current = FirebaseAuth.instance.currentUser;
-
-  // all users
-  final usersCollection = FirebaseFirestore.instance.collection("Users");
-  final currentPassword = FirebaseAuth.instance.currentUser!.email;
-
   final rd = FirebaseDatabase.instance;
 
   String oldPass = "";
   String currentPasswordd = "";
 
-  // edit field
-  Future<void> editField(String field, String idUser) async {
+  Future<void> editField(String name,String field, String idUser) async {
     String newValue = "";
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
               backgroundColor: Colors.white,
               title: Text(
-                'Edit ' + field,
+                'Cập nhật',
                 style: TextStyle(color: Colors.grey[900]),
               ),
               content: TextField(
@@ -54,19 +42,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: Colors.grey[900],
                 ),
                 decoration: InputDecoration(
-                    hintText: "Enter new $field",
-                    hintStyle: TextStyle(color: Colors.grey)),
+                    hintText: "Nhập $name mới",
+                    hintStyle: TextStyle(color: Colors.grey)
+                ),
                 onChanged: (value) {
                   newValue = value;
                   print('gia tri thay vo: $newValue');
                 },
               ),
               actions: [
+
                 // cancel button
                 TextButton(
                     onPressed: () => Navigator.pop(context),
                     child: Text(
-                      'Cancel',
+                      'Hủy',
                       style: TextStyle(color: Colors.grey[900]),
                     )),
 
@@ -94,47 +84,51 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                     child: Text(
-                      'Save',
+                      'Lưu',
                       style: TextStyle(color: Colors.grey[900]),
                     ))
               ],
             ));
   }
 
-  Future<void> updatePasswordd(
-      String field, String currentPass, String idUser) async {
+  Future<void> updatePasswordd(String field, String currentPass, String idUser) async {
     String newPass = "";
     await showDialog(
         context: context,
         builder: (context) => AlertDialog(
               backgroundColor: Colors.white,
               title: Text(
-                'Edit ' + field,
+                'Cập nhật',
                 style: TextStyle(color: Colors.grey[900]),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
+                  // old pass
                   TextField(
                     autofocus: true,
                     style: TextStyle(
                       color: Colors.grey[900],
                     ),
                     decoration: InputDecoration(
-                        hintText: "Enter new old pass",
-                        hintStyle: TextStyle(color: Colors.grey)),
+                        hintText: "Nhập mật khẩu khẩu hiện tại",
+                        hintStyle: TextStyle(color: Colors.grey)
+                    ),
                     onChanged: (value1) {
                       oldPass = value1;
                     },
                   ),
+
+                  // new pass
                   TextField(
                     // autofocus: true,
                     style: TextStyle(
                       color: Colors.grey[900],
                     ),
                     decoration: InputDecoration(
-                        hintText: "Enter new new pass",
+                        hintText: "Nhập mật khẩu khẩu mới",
                         hintStyle: TextStyle(color: Colors.grey)),
                     onChanged: (value) {
                       newPass = value;
@@ -143,11 +137,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               actions: [
+
                 // cancel button
                 TextButton(
                     onPressed: () => Navigator.pop(context),
                     child: Text(
-                      'Cancel',
+                      'Hủy',
                       style: TextStyle(color: Colors.grey[900]),
                     )),
 
@@ -160,14 +155,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         User? user = FirebaseAuth.instance.currentUser;
 
                         if (newPass.trim().length >= 6) {
-                          print("1: " + user!.email! + "  " + currentPass);
-
                           var credential = EmailAuthProvider.credential(
                             email: user!.email!,
                             password: currentPass,
                           );
-
-                          print("2");
 
                           await currentUser
                               .reauthenticateWithCredential(credential)
@@ -184,24 +175,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           showSuccessSnackBar("Cập nhật mật khẩu thành công!");
 
-                          print('Đã đổi mật khẩu thành công!');
+                          print('-ProfilePage: Đã đổi mật khẩu thành công!');
 
                           setState(() {
                             currentPasswordd = newPass;
                           });
                         } else {
                           showErrorSnackBar("Mật khẩu quá yếu (>=6 kí tự)");
-                          print('Lỗi khi đổi mật khẩu');
+                          print('-ProfilePage: Lỗi khi đổi mật khẩu');
                         }
                       } else {
-                        print('Mật khẩu hiện tại không đúng!');
+                        print('-ProfilePage: Mật khẩu hiện tại không đúng!');
                         showErrorSnackBar("Mật khẩu hiện tại không đúng!");
                       }
 
                       Navigator.pop(context, newPass);
                     },
                     child: Text(
-                      'Save',
+                      'Lưu',
                       style: TextStyle(color: Colors.grey[900]),
                     ))
               ],
@@ -237,7 +228,6 @@ class _ProfilePageState extends State<ProfilePage> {
   
   @override
   Widget build(BuildContext context) {
-    print("hahahaha");
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -261,12 +251,11 @@ class _ProfilePageState extends State<ProfilePage> {
             future: controller.getUserDataRD(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                // get user data
                 if (snapshot.hasData) {
                   UserModel user = snapshot.data as UserModel;
                   currentPasswordd = user.password ?? "";
 
-                  print("email: ${user.email} , ${user.fullname}, ${user.id}");
+                  print("- ProfilePage: ${user.email} , ${user.fullname}, ${user.id}");
                   return Column(
                     children: [
                       const SizedBox(height: 40,),
@@ -286,9 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(color: Colors.grey[800]),
                       ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20,),
 
                       // user detail
                       Padding(
@@ -302,24 +289,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       // fullname
                       MyTextBox(
                         text: user.fullname ?? "",
-                        sectionName: 'fullname',
-                        onPressed: () =>
-                            editField('fullName', user.id.toString()),
+                        sectionName: 'Họ tên',
+                        onPressed: () => editField('họ tên', 'fullname', user.id.toString()),
                         obscureText: false,
                       ),
 
                       // phone
                       MyTextBox(
                         text: user.phone ?? "",
-                        sectionName: 'phone',
-                        onPressed: () => editField('phone', user.id.toString()),
+                        sectionName: 'Số điện thoại',
+                        onPressed: () => editField('số điện thoại', 'phone', user.id.toString()),
                         obscureText: false,
                       ),
 
                       // pass
                       MyTextBox(
                         text: user.password ?? "",
-                        sectionName: 'password',
+                        sectionName: 'Mật khẩu',
                         onPressed: () => updatePasswordd(
                             'password', currentPasswordd, user.id.toString()),
                         obscureText: true,

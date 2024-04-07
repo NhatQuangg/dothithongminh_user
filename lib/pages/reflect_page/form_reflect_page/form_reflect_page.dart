@@ -40,7 +40,7 @@ class FormReflectPage extends StatefulWidget {
 }
 
 class FormReflectPageState extends State<FormReflectPage> {
-  final controllerUer = Get.put(ProfileController());
+  // final controllerUer = Get.put(ProfileController());
   final controller = Get.put(ReflectController());
 
   List<File> listFile = [];
@@ -52,7 +52,7 @@ class FormReflectPageState extends State<FormReflectPage> {
   File? image;
   List<String> urls = [];
   List<String> video_urls = [];
-  List<String> listCategory = ['Giáo dục', 'An ninh', 'Cơ sở vật chất'];
+  // List<String> listCategory = ['Giáo dục', 'An ninh', 'Cơ sở vật chất'];
   String? selectNameCategory;
 
   bool _isloading = false;
@@ -60,8 +60,7 @@ class FormReflectPageState extends State<FormReflectPage> {
   XFile? file;
   String? u;
   String slectedFileName = "";
-  String defaultImageUrl =
-      'https://hanoispiritofplace.com/wp-content/uploads/2014/08/hinh-nen-cac-loai-chim-dep-nhat-1-1.jpg';
+  String defaultImageUrl = 'https://hanoispiritofplace.com/wp-content/uploads/2014/08/hinh-nen-cac-loai-chim-dep-nhat-1-1.jpg';
 
   final ref = FirebaseDatabase.instance.ref().child("Category");
   List<String> categories = [];
@@ -291,9 +290,7 @@ class FormReflectPageState extends State<FormReflectPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10,),
               Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -599,7 +596,27 @@ class FormReflectPageState extends State<FormReflectPage> {
                                     if (controller.title.text.trim() == null || controller.title.text.trim() == "") {
                                       AnimatedSnackBar.material(
                                         'Chưa nhập tiêu đề!',
-                                        duration: Duration(milliseconds: 1),
+                                        // duration: Duration(milliseconds: 1),
+                                        type: AnimatedSnackBarType.error,
+                                        mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                      ).show(context);
+                                      print("Chưa nhập tiêu đề");
+                                      return null;
+                                    } else
+                                    if (controller.content.text.trim() == null || controller.title.text.trim() == "") {
+                                      AnimatedSnackBar.material(
+                                        'Chưa nhập nội dung!',
+                                        // duration: Duration(milliseconds: 1),
+                                        type: AnimatedSnackBarType.error,
+                                        mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                      ).show(context);
+                                      print("Chưa nhập tiêu đề");
+                                      return null;
+                                    } else
+                                    if (controller.address.text.trim() == null || controller.address.text.trim() == "") {
+                                      AnimatedSnackBar.material(
+                                        'Chưa nhập địa chỉ!',
+                                        // duration: Duration(milliseconds: 1),
                                         type: AnimatedSnackBarType.error,
                                         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                       ).show(context);
@@ -614,7 +631,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                                       print("day la id: ${userId}");
 
                                       final reflect = ReflectModel(
-                                        content_response: '',
+                                        contentfeedback: [],
                                         id_user: userId,
                                         title: controller.title.text.trim(),
                                         id_category: selectedCategoryKey,
@@ -627,14 +644,14 @@ class FormReflectPageState extends State<FormReflectPage> {
                                         // createdAt: Timestamp.now()
                                       );
 
-                                      await ReflectController.instance
-                                          .createReflectRD(reflect)
-                                          .then((value) {
+                                      await ReflectController.instance.addReflectModel(reflect)
+                                      .then((value) {
+
                                         AnimatedSnackBar.material(
-                                          'Đăng phản ánh thành công!',
+                                          "Đăng phản ánh thành công",
                                           type: AnimatedSnackBarType.success,
-                                          duration: Duration(milliseconds: 1),
-                                          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                          duration: Duration(microseconds: 1),
+                                          mobileSnackBarPosition: MobileSnackBarPosition.bottom
                                         ).show(context);
 
                                         controller.title.text = '';
@@ -648,40 +665,6 @@ class FormReflectPageState extends State<FormReflectPage> {
                                       });
 
                                       print("thanh cong roi ne");
-                                      // await ReflectController.instance
-                                      //     .createReflect(ReflectModel(
-                                      //         content_response: '',
-                                      //         // likes: [],
-                                      //         email: getEmail(),
-                                      //         title: controller.title.text.trim(),
-                                      //         category: selectNameCategory,
-                                      //         content: controller.content.text.trim(),
-                                      //         address: controller.address.text.trim(),
-                                      //         media: urls,
-                                      //         accept: false,
-                                      //         handle: 1,
-                                      //         createdAt: Timestamp.now()))
-                                      //     .then((value) {
-                                      //   AnimatedSnackBar.material(
-                                      //     'Đăng phản ánh thành công!',
-                                      //     type: AnimatedSnackBarType
-                                      //         .success,
-                                      //     duration:
-                                      //         Duration(milliseconds: 1),
-                                      //     mobileSnackBarPosition:
-                                      //         MobileSnackBarPosition
-                                      //             .bottom,
-                                      //   ).show(context);
-                                      //
-                                      //   controller.title.text = '';
-                                      //   // selectNameCategogy = '';
-                                      //   controller.content.text = '';
-                                      //   controller.address.text = '';
-                                      //   listFile = [];
-                                      //   setState(() {
-                                      //     _isloading = false;
-                                      //   });
-                                      // });
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -692,8 +675,10 @@ class FormReflectPageState extends State<FormReflectPage> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )),
+                                        color: Colors.white
+                                    ),
+                                  )
+                              ),
                             ),
                           ),
                           const SizedBox(

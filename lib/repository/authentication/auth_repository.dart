@@ -10,12 +10,13 @@ class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
 
   final _auth = FirebaseAuth.instance;
-  late final Rx<User?> firebaseUser;
+  final Rx<User?> firebaseUser = Rx<User?>(FirebaseAuth.instance.currentUser);
+  // late final Rx<User?> firebaseUser;
   var verificationId = ''.obs;
 
   @override
   void onReady() {
-    firebaseUser = Rx<User?>(_auth.currentUser);
+    // firebaseUser = Rx<User?>(_auth.currentUser);
     firebaseUser.bindStream(_auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
   }

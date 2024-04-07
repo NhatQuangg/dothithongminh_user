@@ -152,8 +152,7 @@ class ControlsOverlay extends StatelessWidget {
                 await controller.pause();
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
-                  builder: (context) =>
-                      VideoPlayerFullScreen(link, UniqueKey()),
+                  builder: (context) => VideoPlayerFullScreen(link, UniqueKey()),
                 ));
               },
               child: Icon(

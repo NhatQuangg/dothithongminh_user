@@ -8,6 +8,7 @@ class ReflectRepository extends GetxController {
   static ReflectRepository get instance => Get.find();
   final _db = FirebaseFirestore.instance;
   final _rd = FirebaseDatabase.instance;
+  final databaseReference = FirebaseDatabase.instance.ref();
 
   createReflect(ReflectModel reflect) async {
     await _db
@@ -136,6 +137,36 @@ class ReflectRepository extends GetxController {
       // Xử lý lỗi nếu có
       print("Error getting reflects from Realtime Database: $e");
       return []; // Trả về danh sách rỗng nếu có lỗi
+    }
+  }
+
+  Future<void> addReflectModel(ReflectModel reflectModel) async {
+    try {
+      final reference = databaseReference.child('Reflects').push();
+      await reference.set(reflectModel.toJson());
+      print('ReflectModel added successfully with ID:');
+    } catch (e) {
+      print('Error adding ReflectModel: $e');
+    }
+  }
+
+  Future<void> updateReflectModel(ReflectModel reflectModel) async {
+    try {
+      final reference = databaseReference.child('Reflects/${reflectModel.id}');
+      await reference.update(reflectModel.toJson());
+      print('ReflectModel updated successfully!');
+    } catch (e) {
+      print('Error updating ReflectModel: $e');
+    }
+  }
+
+  Future<void> deleteReflectModel(String id) async {
+    try {
+      final reference = databaseReference.child('Reflects/$id');
+      await reference.remove();
+      print('ReflectModel deleted successfully!');
+    } catch (e) {
+      print('Error deleting ReflectModel: $e');
     }
   }
 }

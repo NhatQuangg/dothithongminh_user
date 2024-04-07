@@ -2,8 +2,11 @@ bool isImageFromPath(String file) {
   if (file.toLowerCase() == "jpg" ||
       file.toLowerCase() == "png" ||
       file.toLowerCase() == "jpeg") {
+    print('true');
     return true;
   } else {
+    print('false');
+
     return false;
   }
 }

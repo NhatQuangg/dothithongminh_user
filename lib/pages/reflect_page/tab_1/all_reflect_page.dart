@@ -38,9 +38,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
               child: FirebaseAnimatedList(
                 query: ref,
                 itemBuilder: (context, snapshot, index, animation) {
-
                   final key = snapshot.key.toString();
-
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
                   final id_category = snapshot.child("id_category").value.toString();
@@ -48,12 +46,15 @@ class _AllReflectPageState extends State<AllReflectPage> {
                   final accept = snapshot.child("accept").value as bool;
                   final address = snapshot.child("address").value.toString();
                   final id_user = snapshot.child("id_user").value.toString();
-                  final contentfeedback = snapshot.child("contentfeedback").value.toString();
+                  final contentfeedback = snapshot.child("contentfeedback").value as List<dynamic>?;
                   final timestamp = snapshot.child("createdAt").value as int;
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
+                  print(images![0]);
+
+                  print(images![0].split('.').last);
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
@@ -65,7 +66,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                             title: title,
                             id_category: id_category,
                             content: content,
-                            content_response: contentfeedback,
+                            contentfeedback: contentfeedback ?? [],
                             address: address,
                             media: images,
                             accept: accept,
@@ -76,14 +77,11 @@ class _AllReflectPageState extends State<AllReflectPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              // builder: (context) => GetReflects2(id: key.toString()),
                               builder: (context) => DetailReflectPage(reflect: reflectModel),
-
                             ),
                           ).then((value) {
                             setState(() {});
                           });
-                          print("Key: $key");
                         },
                         child: Container(
                           height: 140,
@@ -102,6 +100,10 @@ class _AllReflectPageState extends State<AllReflectPage> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              // isImageFromPath(images![0].split('.').last)
+                              //  ? Text("")
+                              // : Text("ha"),
+
                               images != null
                                   ? Padding(
                                 padding: const EdgeInsets.only(left: 10),
@@ -126,6 +128,8 @@ class _AllReflectPageState extends State<AllReflectPage> {
 
                               Column(
                                 children: [
+
+                                  // title
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
                                     child: SizedBox(
@@ -143,6 +147,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                     ),
                                   ),
 
+                                  // content
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(12, 5, 0, 0),
                                     child: SizedBox(
@@ -155,6 +160,8 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       ),
                                     ),
                                   ),
+
+                                  // datetime
                                   Padding(
                                     // padding: EdgeInsets.all(0),
                                     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
@@ -178,6 +185,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
 
                                   SizedBox(height: 2),
 
+                                  //
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
                                     child: SizedBox(
@@ -185,6 +193,8 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
+
+                                          // Category
                                           FutureBuilder<String>(
                                             future: categoryController.getCategoryNameById(id_category),
                                             builder: (context, snapshot) {
@@ -202,6 +212,8 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                               );
                                             },
                                           ),
+
+                                          // Handle
                                           if (handle == 1)
                                             Text(
                                               'Đang xử lý',

@@ -41,7 +41,7 @@ class _ProcessedReflectUserPageState extends State<ProcessedReflectUserPage> {
   final ref = FirebaseDatabase.instance.ref("Reflects");
   final categoryController = Get.put(CategoryController());
 
-  late String? userId;
+  late String? userId = "";
   Future<void> _getUserId() async {
     String? id = await getId_Users();
     setState(() {

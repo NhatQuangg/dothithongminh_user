@@ -26,12 +26,12 @@ class _AllReflectUserPageState extends State<AllReflectUserPage> {
   final controller = Get.put(ReflectController());
   final controllerProfile = Get.put(ProfileController());
   List<dynamic> dataList = [];
-  String myemail = getEmail();
+  // String myemail = getEmail();
 
   final ref = FirebaseDatabase.instance.ref("Reflects");
   final categoryController = Get.put(CategoryController());
 
-  late String? userId;
+  late String? userId = "";
   Future<void> _getUserId() async {
     String? id = await getId_Users();
     setState(() {
@@ -83,8 +83,9 @@ class _AllReflectUserPageState extends State<AllReflectUserPage> {
                           children: [
                             SlidableAction(
                               onPressed: (context) {
-                                ref.child(snapshot.key.toString()).remove();
-                                print("DELETE: $id_user "+" ${snapshot.key}");
+                                controller.deleteReflectModel(snapshot.key.toString());
+                                // ref.child(snapshot.key.toString()).remove();
+                                // print("DELETE: $id_user "+" ${snapshot.key}");
                                 setState(() {});
                               },
                               backgroundColor: Colors.red,
