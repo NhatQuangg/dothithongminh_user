@@ -55,7 +55,7 @@ class _GeolocationAppState extends State<GeolocationApp> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Location coordinates",
+              "Location Location",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(
