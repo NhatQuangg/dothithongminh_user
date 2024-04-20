@@ -495,7 +495,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                                           listFile[index].path.toLowerCase().contains("png") ||
                                           listFile[index].path.toLowerCase().contains("jpeg") ||
                                           listFile[index].path.toLowerCase().contains("webp"))
-                                          {
+                                      {
                                         print(
                                             "if file ${listFile[index].path}");
                                         return Stack(
@@ -631,27 +631,28 @@ class FormReflectPageState extends State<FormReflectPage> {
                                       print("day la id: ${userId}");
 
                                       final reflect = ReflectModel(
-                                        contentfeedback: [],
-                                        id_user: userId,
-                                        title: controller.title.text.trim(),
-                                        id_category: selectedCategoryKey,
-                                        content: controller.content.text.trim(),
-                                        address: controller.address.text.trim(),
-                                        media: urls,
-                                        accept: false,
-                                        handle: 1,
-                                        createdAt: DateTime.now(),
+                                          contentfeedback: [],
+                                          id_user: userId,
+                                          title: controller.title.text.trim(),
+                                          id_category: selectedCategoryKey,
+                                          content: controller.content.text.trim(),
+                                          address: controller.address.text.trim(),
+                                          media: urls,
+                                          accept: false,
+                                          handle: 1,
+                                          createdAt: DateTime.now(),
+                                          likes: []
                                         // createdAt: Timestamp.now()
                                       );
 
                                       await ReflectController.instance.addReflectModel(reflect)
-                                      .then((value) {
+                                          .then((value) {
 
                                         AnimatedSnackBar.material(
-                                          "Đăng phản ánh thành công",
-                                          type: AnimatedSnackBarType.success,
-                                          duration: Duration(microseconds: 1),
-                                          mobileSnackBarPosition: MobileSnackBarPosition.bottom
+                                            "Đăng phản ánh thành công",
+                                            type: AnimatedSnackBarType.success,
+                                            duration: Duration(microseconds: 1),
+                                            mobileSnackBarPosition: MobileSnackBarPosition.bottom
                                         ).show(context);
 
                                         controller.title.text = '';

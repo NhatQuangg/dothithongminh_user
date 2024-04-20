@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -108,10 +109,9 @@ class ReflectRepository extends GetxController {
 
     final data = snapshot.snapshot.value as Map<String, dynamic>;
 
-    final reflects = data.entries.map((entry) =>
-        ReflectModel.fromRealtimeDatabase(entry.value)
-    ).toList();
-
+    final reflects = data.entries
+        .map((entry) => ReflectModel.fromRealtimeDatabase(entry.value))
+        .toList();
 
     return reflects;
   }
@@ -128,9 +128,9 @@ class ReflectRepository extends GetxController {
 
       final data = snapshot.snapshot.value as Map<String, dynamic>;
 
-      final reflects = data.entries.map((entry) =>
-          ReflectModel.fromRTDB(entry.value)
-      ).toList();
+      final reflects = data.entries
+          .map((entry) => ReflectModel.fromRTDB(entry.value))
+          .toList();
 
       return reflects;
     } catch (e) {
@@ -167,6 +167,26 @@ class ReflectRepository extends GetxController {
       print('ReflectModel deleted successfully!');
     } catch (e) {
       print('Error deleting ReflectModel: $e');
+    }
+  }
+
+  Future<void> likeReflectModel(ReflectModel reflectModel, bool isLike) async {
+    try {
+      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+      List<dynamic> currentLikes = List.from(reflectModel.likes ?? []);
+      if (currentUserId != null) {
+        if (isLike) {
+          currentLikes.add(currentUserId);
+        } else if (!isLike) {
+          currentLikes.remove(currentUserId);
+        }
+      }
+
+      final reference = databaseReference.child('Reflects/${reflectModel.id}');
+      await reference.update({'likes': currentLikes});
+      print('ReflectModel updated likes successfully!');
+    } catch (e) {
+      print('Error updating ReflectModel: $e');
     }
   }
 }

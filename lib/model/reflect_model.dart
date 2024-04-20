@@ -10,19 +10,15 @@ class ReflectModel {
   final List<dynamic>? contentfeedback;
   final String? address;
   final List<dynamic>? media;
-
-  // final List<dynamic>? likes;
-
+  final List<dynamic>? likes;
   final bool? accept;
   final int? handle;
   final DateTime? createdAt;
 
-  // final String? id_category;
-
   const ReflectModel({
     this.id,
     required this.id_user,
-    // required this.likes,
+    required this.likes,
     required this.title,
     required this.id_category,
     required this.content,
@@ -44,8 +40,7 @@ class ReflectModel {
       "media": media,
       "accept": accept,
       "handle": handle,
-      // "Likes": likes,
-      // "createdAt": createdAt,
+      "Likes": likes,
       "createdAt": createdAt?.millisecondsSinceEpoch,
       "contentfeedback": contentfeedback
     };
@@ -65,44 +60,45 @@ class ReflectModel {
         accept: data["accept"],
         handle: data["handle"],
         createdAt: DateTime.fromMillisecondsSinceEpoch(data["createdAt"]),
-        // createdAt: data["createdAt"],
-        // likes: data["Likes"],
+        likes: data["Likes"],
         contentfeedback: data["contentresponse"]);
   }
 
   factory ReflectModel.fromRealtimeDatabase(MapEntry<String, dynamic> entry) {
     final data = entry.value as Map<String, dynamic>;
     return ReflectModel(
-      id: entry.key,
-      id_user: data["id_user"],
-      title: data["title"],
-      id_category: data["id_category"],
-      content: data["content"],
-      address: data["address"],
-      media: List<dynamic>.from(data["media"] ?? []),
-      accept: data["accept"],
-      handle: data["handle"],
-      createdAt: data['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(data['createdAt'])
-          : null,
-      contentfeedback: data['contentfeedback'],
+        id: entry.key,
+        id_user: data["id_user"],
+        title: data["title"],
+        id_category: data["id_category"],
+        content: data["content"],
+        address: data["address"],
+        media: List<dynamic>.from(data["media"] ?? []),
+        accept: data["accept"],
+        handle: data["handle"],
+        createdAt: data['createdAt'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(data['createdAt'])
+            : null,
+        contentfeedback: data['contentfeedback'],
+        likes: data['likes']
     );
   }
 
   factory ReflectModel.fromRTDB(Map<String, dynamic> data) {
     return ReflectModel(
-      id_user: data["id_user"],
-      title: data["title"],
-      id_category: data["id_category"],
-      content: data["content"],
-      address: data["address"],
-      media: List<dynamic>.from(data["media"] ?? []),
-      accept: data["accept"],
-      handle: data["handle"],
-      createdAt: (data['createdAt'] != null)
-          ? DateTime.fromMicrosecondsSinceEpoch(data['createdAt'])
-          : DateTime.now(),
-      contentfeedback: data['contentfeedback'],
+        id_user: data["id_user"],
+        title: data["title"],
+        id_category: data["id_category"],
+        content: data["content"],
+        address: data["address"],
+        media: List<dynamic>.from(data["media"] ?? []),
+        accept: data["accept"],
+        handle: data["handle"],
+        createdAt: (data['createdAt'] != null)
+            ? DateTime.fromMicrosecondsSinceEpoch(data['createdAt'])
+            : DateTime.now(),
+        contentfeedback: data['contentfeedback'],
+        likes: data['likes']
     );
   }
 }

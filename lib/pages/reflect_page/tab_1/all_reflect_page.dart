@@ -11,7 +11,6 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 
 class AllReflectPage extends StatefulWidget {
   const AllReflectPage({super.key});
@@ -51,27 +50,26 @@ class _AllReflectPageState extends State<AllReflectPage> {
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
+                  final likes = snapshot.child("likes").value as List<dynamic>?;
 
-                  print(images![0]);
-
-                  print(images![0].split('.').last);
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
                       child: InkWell(
                         onTap: () {
                           ReflectModel reflectModel = ReflectModel(
-                            id: key,
-                            id_user: id_user,
-                            title: title,
-                            id_category: id_category,
-                            content: content,
-                            contentfeedback: contentfeedback ?? [],
-                            address: address,
-                            media: images,
-                            accept: accept,
-                            handle: handle,
-                            createdAt: dateTime,
+                              id: key,
+                              id_user: id_user,
+                              title: title,
+                              id_category: id_category,
+                              content: content,
+                              contentfeedback: contentfeedback ?? [],
+                              address: address,
+                              media: images,
+                              accept: accept,
+                              handle: handle,
+                              createdAt: dateTime,
+                              likes: likes ?? []
                           );
 
                           Navigator.push(
@@ -100,25 +98,22 @@ class _AllReflectPageState extends State<AllReflectPage> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              // isImageFromPath(images![0].split('.').last)
-                              //  ? Text("")
-                              // : Text("ha"),
-
                               images != null
-                                  ? Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Container(
-                                  width: 115,
-                                  height: 110,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: Image.network(
-                                          images[0].toString(),
-                                        ).image
+                                  ? Flexible(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width / 3.2,
+                                    height: MediaQuery.of(context).size.height / 6.5,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: Image.network(images[0].toString()).image
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
                               )
@@ -126,115 +121,118 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                 child: CircularProgressIndicator(),
                               ),
 
-                              Column(
-                                children: [
-
-                                  // title
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width / 1.7,
-                                      child: Text(
-                                        '${title}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14
+                              Flexible(
+                                flex: 4,
+                                child: Column(
+                                  children: [
+                                    // title
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Text(
+                                          '${title}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        textAlign: TextAlign.start,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                  ),
 
-                                  // content
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(12, 5, 0, 0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width / 1.7,
-                                      height: 50,
-                                      child: Text(
-                                        '${content}',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                    // content
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 5, 0, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        height: 50,
+                                        child: Text(
+                                          '${content}',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  // datetime
-                                  Padding(
-                                    // padding: EdgeInsets.all(0),
-                                    padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width / 1.7,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          iconAndText(
-                                              textStyle: TextStyle(
-                                                  fontSize: 12
-                                              ),
-                                              size: 12,
-                                              title:  '${formattedDateTime}', // formatedDate,
-                                              icon: Icons.calendar_month
-                                          ),
-                                        ],
+                                    // datetime
+                                    Padding(
+                                      // padding: EdgeInsets.all(0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            iconAndText(
+                                                textStyle: TextStyle(
+                                                    fontSize: 12
+                                                ),
+                                                size: 12,
+                                                title:  '${formattedDateTime}', // formatedDate,
+                                                icon: Icons.calendar_month
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  SizedBox(height: 2),
+                                    SizedBox(height: 2),
 
-                                  //
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width / 1.7,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
+                                    //
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Row(
 
-                                          // Category
-                                          FutureBuilder<String>(
-                                            future: categoryController.getCategoryNameById(id_category),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                                return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
-                                              }
-                                              if (snapshot.hasError) {
-                                                return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
-                                              }
-                                              return iconAndText(
-                                                  textStyle: TextStyle(fontSize: 12),
-                                                  size: 12,
-                                                  title: "${snapshot.data}",
-                                                  icon: Icons.bookmark
-                                              );
-                                            },
-                                          ),
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
 
-                                          // Handle
-                                          if (handle == 1)
-                                            Text(
-                                              'Đang xử lý',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.red
-                                              ),
-                                            )
-                                          else if (handle == 0)
-                                            Text(
-                                              'Đã xử lý',
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.blue
-                                              ),
-                                            )
-                                        ],
+                                            // Category
+                                            FutureBuilder<String>(
+                                              future: categoryController.getCategoryNameById(id_category),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                                                }
+                                                if (snapshot.hasError) {
+                                                  return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                                                }
+                                                return iconAndText(
+                                                    textStyle: TextStyle(fontSize: 12),
+                                                    size: 12,
+                                                    title: "${snapshot.data}",
+                                                    icon: Icons.bookmark
+                                                );
+                                              },
+                                            ),
+
+                                            // Handle
+                                            if (handle == 1)
+                                              Text(
+                                                'Đang xử lý',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.red
+                                                ),
+                                              )
+                                            else if (handle == 0)
+                                              Text(
+                                                'Đã xử lý',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.blue
+                                                ),
+                                              )
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               )
                             ],
                           ),
