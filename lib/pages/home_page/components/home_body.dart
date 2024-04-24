@@ -82,7 +82,7 @@ class HomeBody extends StatelessWidget {
             'Dịch vụ đô thị',
             style: GoogleFonts.notoSans(
               textStyle: TextStyle(
-                fontSize: 15,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -103,12 +103,11 @@ class HomeBody extends StatelessWidget {
                       builder: (context) => ReflectPage(),
                     )
                 );
-                print('4');
               },
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(40),
+                    padding: EdgeInsets.all(80),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(16),
@@ -116,48 +115,48 @@ class HomeBody extends StatelessWidget {
                     ),
                     child: Icon(
                       FontAwesomeIcons.warning,
-                      size: 50,
+                      size: 80,
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Text('Phản ánh')
+                  Text('Phản ánh', style: TextStyle(fontSize: 25),)
                 ],
               ),
             ),
             SizedBox(width: 10),
-            GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => GetReflects2(),
-                //     )
-                // );
-                print('5');
-              },
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(40),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                      borderRadius: BorderRadius.circular(16),
-                      color: Colors.grey[200],
-                    ),
-                    child: Icon(
-                      FontAwesomeIcons.qrcode,
-                      size: 50,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text('QRRRR')
-                ],
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //     context,
+            //     //     MaterialPageRoute(
+            //     //       builder: (context) => GetReflects2(),
+            //     //     )
+            //     // );
+            //     print('5');
+            //   },
+            //   child: Column(
+            //     children: [
+            //       Container(
+            //         padding: EdgeInsets.all(40),
+            //         decoration: BoxDecoration(
+            //           border: Border.all(color: Colors.white),
+            //           borderRadius: BorderRadius.circular(16),
+            //           color: Colors.grey[200],
+            //         ),
+            //         child: Icon(
+            //           FontAwesomeIcons.qrcode,
+            //           size: 50,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         height: 10,
+            //       ),
+            //       Text('QRRRR')
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ],

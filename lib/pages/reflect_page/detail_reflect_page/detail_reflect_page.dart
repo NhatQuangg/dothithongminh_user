@@ -251,7 +251,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                             runSpacing: 5,
                             spacing: 5,
                             children: contentFeedbackList.map((e) {
-                              if (e.toString().contains('jpg')) {
+                              if (e.toString().contains('jpg') || e.toString().contains('png') || e.toString().contains('jpeg')) {
                                 debugPrint("hehe: ${e.toString().contains('jpg')}");
                                 return GestureDetector(
                                   onTap: () {
@@ -282,7 +282,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                                   ),
                                 );
                               }
-                              if (e.toString().contains('mp4')) {
+                              if (e.toString().contains('mp4') || e.toString().contains('mkv')) {
                                 debugPrint("mp4: ${e.toString().contains('mp4')}");
                                 return Container(
                                   width: 200,
@@ -343,7 +343,6 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                       : SizedBox(),
                   SizedBox(height: 20,),
                   LikeButton(isLiked: isLiked, reflectModel: widget.reflect, likeCount: widget.reflect.likes!.length),
-                  // Text(widget.reflect.likes!.length.toString()),
                   SizedBox(height: 20,),
 
                 ],

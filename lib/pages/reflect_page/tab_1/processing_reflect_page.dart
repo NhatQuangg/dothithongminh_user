@@ -5,6 +5,7 @@ import 'package:dothithongminh_user/controller/category_controller.dart';
 import 'package:dothithongminh_user/controller/profile_controller.dart';
 import 'package:dothithongminh_user/controller/reflect_controller.dart';
 import 'package:dothithongminh_user/model/reflect_model.dart';
+import 'package:dothithongminh_user/pages/reflect_page/detail_reflect_page/detail_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_1/all_reflect_page.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -40,14 +41,17 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
               child: FirebaseAnimatedList(
                 query: ref,
                 itemBuilder: (context, snapshot, index, animation) {
+                  final key = snapshot.key.toString();
 
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
                   final id_category = snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
-                  final accept = snapshot.child("accept").value.toString();
                   final address = snapshot.child("address").value.toString();
-                  final email = snapshot.child("email").value.toString();
+                  final accept = snapshot.child("accept").value as bool;
+                  final id_user = snapshot.child("id_user").value.toString();
+                  final likes = snapshot.child("likes").value as List<dynamic>?;
+                  final contentfeedback = snapshot.child("contentfeedback").value as List<dynamic>?;
 
                   final timestamp = snapshot.child("createdAt").value as int;
                   final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
@@ -59,6 +63,31 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Slidable(
                         child: InkWell(
+                          onTap: () {
+                            ReflectModel reflectModel = ReflectModel(
+                                id: key,
+                                id_user: id_user,
+                                title: title,
+                                id_category: id_category,
+                                content: content,
+                                contentfeedback: contentfeedback ?? [],
+                                address: address,
+                                media: images,
+                                accept: accept,
+                                handle: handle,
+                                createdAt: dateTime,
+                                likes: likes ?? []
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailReflectPage(reflect: reflectModel),
+                              ),
+                            ).then((value) {
+                              setState(() {});
+                            });
+                          },
                           child: Container(
                             height: 140,
                             decoration: BoxDecoration(
