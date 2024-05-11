@@ -41,16 +41,21 @@ class _AllReflectPageState extends State<AllReflectPage> {
                   final key = snapshot.key.toString();
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
-                  final id_category = snapshot.child("id_category").value.toString();
+                  final id_category =
+                      snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
                   final accept = snapshot.child("accept").value as bool;
                   final address = snapshot.child("address").value.toString();
                   final id_user = snapshot.child("id_user").value.toString();
-                  final contentfeedback = snapshot.child("contentfeedback").value as List<dynamic>?;
+                  final contentfeedback =
+                      snapshot.child("contentfeedback").value as List<dynamic>?;
                   final timestamp = snapshot.child("createdAt").value as int;
-                  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-                  final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
-                  final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
+                  final dateTime =
+                      DateTime.fromMillisecondsSinceEpoch(timestamp);
+                  final formattedDateTime =
+                      "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+                  final List<dynamic>? images =
+                      snapshot.child("media").value as List<dynamic>?;
                   final likes = snapshot.child("likes").value as List<dynamic>?;
 
                   print(getFileName(images![0].toString()));
@@ -72,8 +77,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                               accept: accept,
                               handle: handle,
                               createdAt: dateTime,
-                              likes: likes ?? []
-                          );
+                              likes: likes ?? []);
 
                           Navigator.push(
                             context,
@@ -104,43 +108,49 @@ class _AllReflectPageState extends State<AllReflectPage> {
                             children: [
                               images != null
                                   ? Flexible(
-                                flex: 2,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width / 3.2,
-                                    height: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .height / 6.5,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: images[0].toString()
-                                              .toString()
-                                              .contains('.jpg') ||
-                                              images[0].toString().toString()
-                                                  .toLowerCase()
-                                                  .contains('.png') ||
-                                              images[0].toString()
-                                                  .toString()
-                                                  .contains('.jpeg')
-                                              ? Image.network(images[0].toString()).image
-                                              : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                      flex: 2,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              3.2,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              6.5,
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: images[0]
+                                                            .toString()
+                                                            .toLowerCase()
+                                                            .contains('.jpg') ||
+                                                        images[0]
+                                                            .toString()
+                                                            .toLowerCase()
+                                                            .contains('.png') ||
+                                                        images[0]
+                                                            .toString()
+                                                            .toLowerCase()
+                                                            .contains('.jpeg')
+                                                    ? Image.network(images[0]
+                                                            .toString())
+                                                        .image
+                                                    : NetworkImage(
+                                                        'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
                                       ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              )
+                                    )
                                   : Center(
-                                child: CircularProgressIndicator(),
-                              ),
-
+                                      child: CircularProgressIndicator(),
+                                    ),
                               Flexible(
                                 flex: 4,
                                 child: Column(
@@ -150,16 +160,14 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 8, 0, 0),
                                       child: SizedBox(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 1.7,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.7,
                                         child: Text(
                                           '${title}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 14
-                                          ),
+                                              fontSize: 14),
                                           textAlign: TextAlign.start,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
@@ -172,10 +180,9 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 5, 0, 0),
                                       child: SizedBox(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 1.7,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.7,
                                         height: 50,
                                         child: Text(
                                           '${content}',
@@ -191,23 +198,20 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: SizedBox(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 1.7,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.7,
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             iconAndText(
-                                                textStyle: TextStyle(
-                                                    fontSize: 12
-                                                ),
+                                                textStyle:
+                                                    TextStyle(fontSize: 12),
                                                 size: 12,
                                                 title: '${formattedDateTime}',
                                                 // formatedDate,
-                                                icon: Icons.calendar_month
-                                            ),
+                                                icon: Icons.calendar_month),
                                           ],
                                         ),
                                       ),
@@ -220,21 +224,18 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           12, 0, 12, 0),
                                       child: SizedBox(
-                                        width: MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width / 1.7,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.7,
                                         child: Row(
-
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-
                                             // Category
                                             FutureBuilder<String>(
                                               future: categoryController
                                                   .getCategoryNameById(
-                                                  id_category),
+                                                      id_category),
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
@@ -242,16 +243,14 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                 }
                                                 if (snapshot.hasError) {
                                                   return Text(
-                                                      'Error id_category: ${snapshot
-                                                          .error}'); // Hiển thị lỗi nếu có
+                                                      'Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
                                                 }
                                                 return iconAndText(
-                                                    textStyle: TextStyle(
-                                                        fontSize: 12),
+                                                    textStyle:
+                                                        TextStyle(fontSize: 12),
                                                     size: 12,
                                                     title: "${snapshot.data}",
-                                                    icon: Icons.bookmark
-                                                );
+                                                    icon: Icons.bookmark);
                                               },
                                             ),
 
@@ -261,18 +260,15 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                 'Đang xử lý',
                                                 style: TextStyle(
                                                     fontSize: 12,
-                                                    color: Colors.red
-                                                ),
+                                                    color: Colors.red),
                                               )
-                                            else
-                                              if (handle == 0)
-                                                Text(
-                                                  'Đã xử lý',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.blue
-                                                  ),
-                                                )
+                                            else if (handle == 0)
+                                              Text(
+                                                'Đã xử lý',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.blue),
+                                              )
                                           ],
                                         ),
                                       ),
@@ -292,7 +288,6 @@ class _AllReflectPageState extends State<AllReflectPage> {
           ],
         ),
       ),
-
     );
   }
 }

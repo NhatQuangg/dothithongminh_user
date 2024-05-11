@@ -58,7 +58,7 @@ class _ProcessingReflectPageState extends State<ProcessingReflectPage> {
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
-                  if(handle == 0) {
+                  if(handle == 1) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Slidable(
