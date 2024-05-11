@@ -34,45 +34,6 @@ class ReflectController extends GetxController {
 
   final _reflectRepo = Get.put(ReflectRepository());
 
-  @override
-
-  static Future likesPost(String id) async {
-    final idemail = getEmail();
-    print("IDEMAILLL == $idemail");
-
-    final reflectCollection = FirebaseFirestore.instance.collection("Reflect");
-
-    final docRef = reflectCollection.doc(id);
-
-    try {
-      await docRef.update({
-        'Likes': FieldValue.arrayUnion([idemail])
-      });
-    } catch (e) {
-      print("some error $e");
-    }
-  }
-
-  static Future disLikesPost(String id) async {
-    final idemail = getEmail();
-    print("IDEMAILLL == $idemail");
-
-    final reflectCollection = FirebaseFirestore.instance.collection("Reflect");
-
-    final docRef = reflectCollection.doc(id);
-
-    try {
-      await docRef.update({
-        'Likes': FieldValue.arrayRemove([idemail])
-      });
-    } catch (e) {
-      print("some error $e");
-    }
-  }
-
-  // -----------------------------------------------------------------------
-  // -----------------------------------------------------------------------
-
   Future<void> createReflectRD(ReflectModel reflect) async {
     await _reflectRepo.createReflectRD(reflect);
   }

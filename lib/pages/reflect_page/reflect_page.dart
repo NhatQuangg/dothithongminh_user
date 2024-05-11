@@ -23,11 +23,7 @@ class _ReflectPageState extends State<ReflectPage> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            // tab1(),
-
             GeneralPage(),
-            // tab2(),
-
             IndividualScreen(),
           ],
         ),

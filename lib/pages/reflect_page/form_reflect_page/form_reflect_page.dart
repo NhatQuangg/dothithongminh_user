@@ -596,7 +596,6 @@ class FormReflectPageState extends State<FormReflectPage> {
                                     if (controller.title.text.trim() == null || controller.title.text.trim() == "") {
                                       AnimatedSnackBar.material(
                                         'Chưa nhập tiêu đề!',
-                                        // duration: Duration(milliseconds: 1),
                                         type: AnimatedSnackBarType.error,
                                         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                       ).show(context);
@@ -606,17 +605,6 @@ class FormReflectPageState extends State<FormReflectPage> {
                                     if (controller.content.text.trim() == null || controller.title.text.trim() == "") {
                                       AnimatedSnackBar.material(
                                         'Chưa nhập nội dung!',
-                                        // duration: Duration(milliseconds: 1),
-                                        type: AnimatedSnackBarType.error,
-                                        mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-                                      ).show(context);
-                                      print("Chưa nhập tiêu đề");
-                                      return null;
-                                    } else
-                                    if (controller.address.text.trim() == null || controller.address.text.trim() == "") {
-                                      AnimatedSnackBar.material(
-                                        'Chưa nhập địa chỉ!',
-                                        // duration: Duration(milliseconds: 1),
                                         type: AnimatedSnackBarType.error,
                                         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                       ).show(context);
@@ -647,8 +635,7 @@ class FormReflectPageState extends State<FormReflectPage> {
 
                                       await ReflectController.instance.addReflectModel(reflect)
                                           .then((value) {
-
-                                        AnimatedSnackBar.material(
+                                          AnimatedSnackBar.material(
                                             "Đăng phản ánh thành công",
                                             type: AnimatedSnackBarType.success,
                                             duration: Duration(microseconds: 1),

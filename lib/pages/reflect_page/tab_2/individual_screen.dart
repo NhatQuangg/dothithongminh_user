@@ -1,4 +1,5 @@
 import 'package:dothithongminh_user/constants/constant.dart';
+import 'package:dothithongminh_user/pages/reflect_page/search_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_2/all_reflect_user_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_2/processed_reflect_user_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_2/processing_reflect_user_page.dart';
@@ -33,6 +34,19 @@ class _IndividualScreenState extends State<IndividualScreen> {
             size: 30,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchReflectPage(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.search, color: Colors.white, size: 25,)
+          )
+        ],
         backgroundColor: mainColor,
       ),
       body: DefaultTabController(

@@ -1,4 +1,5 @@
 import 'package:dothithongminh_user/constants/constant.dart';
+import 'package:dothithongminh_user/pages/reflect_page/search_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_1/all_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_1/processed_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/tab_1/processing_reflect_page.dart';
@@ -33,6 +34,19 @@ class _GeneralPageState extends State<GeneralPage> {
             size: 25,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchReflectPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.search, color: Colors.white, size: 25,)
+          )
+        ],
         backgroundColor: mainColor,
       ),
       body: DefaultTabController(

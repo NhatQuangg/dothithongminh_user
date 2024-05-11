@@ -24,63 +24,83 @@ class _LoginPageState extends State<LoginPage> {
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool _passwordVisible = false;
+  final formKey = GlobalKey<FormState>();
+
+  // bool _passwordVisible = false;
+  bool flag = true;
+  bool isButtonDisabled = false;
+
+  Future isLoading() async {
+    setState(() {
+      isButtonDisabled = true;
+    });
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    setState(() {
+      isButtonDisabled = false;
+    });
+  }
+
 
   // sign user in method
   void signUserIn() async {
-    // try sign in
     try {
-      // check username null
       if (emailController.text == null || emailController.text == "") {
-        AnimatedSnackBar.material("Vui lòng nhập email!",
+        AnimatedSnackBar.material("Vui lòng nhập đầy đủ",
                 type: AnimatedSnackBarType.error,
                 mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
-        print('chua nhap email');
+        print("hel");
       } else if (passwordController.text == null || passwordController.text == "") {
-        AnimatedSnackBar.material('Vui lòng nhập mật khẩu!',
+        AnimatedSnackBar.material('Vui lòng nhập đầy đủ',
                 type: AnimatedSnackBarType.error,
                 mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
-        print('chua nhap mk');
-      } else {
-        print("Đăng nhập thành công 1");
-          // showDialog(
-          //   context: context,
-          //   builder: (context) {
-          //     return const Center(
-          //       child: CircularProgressIndicator(),
-          //     );
-          //   });
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
+        print("heagel");
 
-        Future.delayed(const Duration(seconds: 0), () {
+      } else {
+        isLoading();
+
+        print("Đăng nhập thành công 1");
+
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+
+        Navigator.of(context).pop();
+
+
+        Future.delayed(const Duration(seconds: 5), () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => AuthPage()),
           );
         });
-        // Navigator.pop(context);
         print('Đăng nhập thành công 2');
       }
     } on FirebaseAuthException catch (e) {
-      print("Looix: ${e.message}");
-      if (e.message ==
-          'An unknown error occurred: FirebaseError: Firebase: The email address is badly formatted. (auth/invalid-email).') {
-        AnimatedSnackBar.material('Mật khẩu không đúng. Vui lòng thử lại!',
+      print(e.code);
+      Navigator.of(context).pop();
+
+      if (e.code == 'invalid-email') {
+        AnimatedSnackBar.material('Tài khoản hoặc mật khẩu không đúng !',
             type: AnimatedSnackBarType.error,
             mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
         print('mk sai');
-      } else if (e.message ==
-          'The supplied auth credential is incorrect, malformed or has expired.') {
-        AnimatedSnackBar.material('Tài khoản không đúng. Vui lòng thử lại!',
-            type: AnimatedSnackBarType.error,
-            mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-            .show(context);
-        print('email sai');
-
-      }
+      } else
+        if (e.code == 'invalid-credential') {
+          AnimatedSnackBar.material('Tài khoản hoặc mật khẩu không đúng !',
+              type: AnimatedSnackBarType.error,
+              mobileSnackBarPosition: MobileSnackBarPosition.bottom)
+              .show(context);
+        }
     }
   }
 
@@ -102,112 +122,66 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 25),
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Tên đăng nhập',
-                  obscureText: false,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: MyTextField(
+                    controller: emailController,
+                    hintText: 'Tên đăng nhập',
+                    obscureText: false,
+                  ),
                 ),
                 const SizedBox(height: 10),
-                // MyTextField(
-                //   controller: passwordController,
-                //   hintText: 'Mật khẩu',
-                //   obscureText: true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: MyTextField(
+                    controller: passwordController,
+                    hintText: 'Mật khẩu',
+                    obscureText: true,
+                  ),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                //   child: TextFormField(
+                //     controller: passwordController,
+                //     obscureText: !_passwordVisible,
+                //     decoration: InputDecoration(
+                //         suffixIcon: IconButton(
+                //           icon: Icon(
+                //             _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                //             color: Colors.grey,
+                //           ),
+                //           onPressed: () async {
+                //             setState(() {
+                //               _passwordVisible = !_passwordVisible;
+                //             });
+                //           },
+                //         ),
+                //         enabledBorder: const OutlineInputBorder(
+                //             borderSide: BorderSide(color: Colors.white),
+                //             borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                //         focusedBorder: OutlineInputBorder(
+                //             borderSide: BorderSide(color: Colors.grey.shade400),
+                //             borderRadius: BorderRadius.all(Radius.circular(30.0))),
+                //         fillColor: Colors.grey.shade200,
+                //         filled: true,
+                //         hintText: 'Mật khẩu',
+                //         hintStyle: TextStyle(
+                //           color: Colors.grey[500],
+                //           fontWeight: FontWeight.w100,
+                //           fontSize: 15,
+                //         ),
+                //         contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 0)
+                //     ),
+                //   ),
                 // ),
 
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: TextFormField(
-                    controller: passwordController,
-                    obscureText: !_passwordVisible,
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                            color: Colors.grey,
-                          ),
-                          onPressed: () async {
-                            // Update the state i.e. toogle the state of passwordVisible variable
-                            setState(() {
-                              _passwordVisible = !_passwordVisible;
-                            });
-                          },
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                            borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        hintText: 'Mật khẩu',
-                        hintStyle: TextStyle(
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.w100,
-                          fontSize: 15,
-                        ),
-                        contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 0)
-                    ),
-                  ),
-                ),
-
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Quên mật khẩu?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
+
                 const SizedBox(height: 25),
                 // sign in button
                 MyButton(
                   text: 'Đăng nhập',
                   onTap: signUserIn,
-                ),
-                const SizedBox(height: 50),
-                // or continue with
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Or continue with',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 50),
-                // google sign in buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SquareTile(
-                        // onTap: () {},
-                        onTap: () => AuthService().signInWithGoogle(),
-                        imagePath: 'images/google.png'),
-                  ],
                 ),
                 const SizedBox(height: 50),
                 // not a member? register now
@@ -221,12 +195,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: () {
-                        // Navigator.of(context).pushReplacement (
-                        //   PageTransition(
-                        //     type: PageTransitionType.rightToLeft, // Animation direction
-                        //     child: RegisterPage(), // Your next page widget
-                        //   ),
-                        // );
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => RegisterPage()));
                       },
@@ -242,31 +210,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 const SizedBox(height: 50),
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     GestureDetector(
-                //       onTap: () {
-                //         Navigator.of(context).pushReplacement(
-                //           PageTransition(
-                //             type: PageTransitionType
-                //                 .rightToLeft, // Animation direction
-                //             child: TestRealTime(), // Your next page widget
-                //           ),
-                //         );
-                //       },
-                //       child: Text(
-                //         'Test Real Time',
-                //         style: TextStyle(
-                //             color: Colors.black,
-                //             fontWeight: FontWeight.bold,
-                //             fontSize: 20
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // )
               ],
             ),
           ),

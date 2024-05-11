@@ -1,9 +1,8 @@
 import 'package:dothithongminh_user/firebase_options.dart';
 import 'package:dothithongminh_user/pages/login_page/auth_page.dart';
 import 'package:dothithongminh_user/test/get_reflect.dart';
-import 'package:dothithongminh_user/test/showtest.dart';
+import 'package:dothithongminh_user/test/search.dart';
 import 'package:dothithongminh_user/test/tab1.dart';
-import 'package:dothithongminh_user/test/testcontroller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';

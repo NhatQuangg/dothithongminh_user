@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dothithongminh_user/constants/constant.dart';
 import 'package:dothithongminh_user/constants/global.dart';
@@ -14,6 +16,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
+
 
 class DetailReflectPage extends StatefulWidget {
   final ReflectModel reflect;
@@ -37,6 +42,50 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
     // TODO: implement initState
     super.initState();
     isLiked = widget.reflect.likes?.contains(currentUserId) ?? false;
+  }
+
+  Future<void> downloadFile(String url) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text("Downloading..."),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+      status = await Permission.storage.status;
+      if (!status.isGranted) {
+        Navigator.pop(context);
+        return;
+      }
+    }
+
+    var time = DateTime.now().microsecondsSinceEpoch;
+    var path = "/storage/emulated/0/Download/document-$time.pdf";
+    var file = File(path);
+    var res = await http.get(Uri.parse(url));
+
+    await file.writeAsBytes(res.bodyBytes);
+
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text("File downloaded successfully"),
+    ));
   }
 
   @override
@@ -71,7 +120,6 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
             print("Ngày tháng năm: $formattedDateTime");
             print("title: ${widget.reflect.title}");
 
-
             return Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 10),
               child: Column(
@@ -85,10 +133,10 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                           future: categoryController.getCategoryNameById(widget.reflect.id_category!),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
+                              return CircularProgressIndicator();
                             }
                             if (snapshot.hasError) {
-                              return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
+                              return Text('Error id_category: ${snapshot.error}');
                             }
                             return iconAndText(
                               textStyle: TextStyle(fontSize: 18, color: Colors.green),
@@ -220,20 +268,10 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                               ],
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Phường Phú Bài HN",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
                           Container(
                             padding: EdgeInsets.all(10),
                             child: Text(
-                              widget.reflect.contentfeedback![0],
+                              'Hạn xử lý: ${widget.reflect.contentfeedback![0]}',
                               style: TextStyle(fontSize: 16),
                               textAlign: TextAlign.justify,
                             ),
@@ -246,12 +284,13 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                               textAlign: TextAlign.justify,
                             ),
                           ),
-                          Wrap(
+                          widget.reflect.contentfeedback![2].isNotEmpty
+                          ? Wrap(
                             alignment: WrapAlignment.start,
                             runSpacing: 5,
                             spacing: 5,
                             children: contentFeedbackList.map((e) {
-                              if (e.toString().contains('jpg') || e.toString().contains('png') || e.toString().contains('jpeg')) {
+                              if (e.toString().contains('jpg') || e.toString().toLowerCase().contains('png') || e.toString().contains('jpeg')) {
                                 debugPrint("hehe: ${e.toString().contains('jpg')}");
                                 return GestureDetector(
                                   onTap: () {
@@ -264,8 +303,8 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                                         )));
                                   },
                                   child: Container(
-                                    width: 200,
-                                    height: 200,
+                                    width: 150,
+                                    height: 150,
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
                                         border: Border.all(),
@@ -275,7 +314,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                                       borderRadius:
                                       BorderRadius.circular(5),
                                       child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         imageUrl: e,
                                       ),
                                     ),
@@ -285,8 +324,8 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                               if (e.toString().contains('mp4') || e.toString().contains('mkv')) {
                                 debugPrint("mp4: ${e.toString().contains('mp4')}");
                                 return Container(
-                                  width: 200,
-                                  height: 200,
+                                  width: 150,
+                                  height: 150,
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
                                       border: Border.all(),
@@ -296,46 +335,26 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                                   VideoPlayerCustom(e, UniqueKey()),
                                 );
                               }
-                              return Container(
-                                width: 150,
-                                height: 150,
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                    border: Border.all(),
-                                    borderRadius:
-                                    BorderRadius.circular(10)),
-                                child: const Center(
-                                    child: Text('PDF file or some file')),
+                              return GestureDetector(
+                                onTap: () {
+                                  print('hah');
+                                  downloadFile(e.toString());
+                                },
+                                child: Container(
+                                  width: 100,
+                                  height: 40,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      borderRadius:
+                                      BorderRadius.circular(10)),
+                                  child: const Center(
+                                      child: Text('File PDF')),
+                                ),
                               );
                             }).toList(),
-                          ),
-                          // for (int i = 2; i < widget.reflect.contentfeedback!.length; i++)
-                          //   Container(
-                          //     padding: EdgeInsets.all(10),
-                          //     child: Text(
-                          //       widget.reflect.contentfeedback![i],
-                          //       style: TextStyle(fontSize: 16),
-                          //       textAlign: TextAlign.justify,
-                          //     ),
-                          //   ),
-                          // for (int i = 2; i < widget.reflect.contentfeedback!.length; i++)
-                          //   GestureDetector(
-                          //     onTap: () {
-                          //       _launchURL(widget.reflect.contentfeedback![i]);
-                          //     },
-                          //     child: Container(
-                          //       padding: EdgeInsets.all(10),
-                          //       child: Text(
-                          //         widget.reflect.contentfeedback![i],
-                          //         style: TextStyle(
-                          //           fontSize: 16,
-                          //           color: Colors.blue, // Màu của liên kết
-                          //           decoration: TextDecoration.underline, // Gạch chân liên kết
-                          //         ),
-                          //         textAlign: TextAlign.justify,
-                          //       ),
-                          //     ),
-                          //   ),
+                          )
+                              : SizedBox(),
                         ],
                       ),
                     ),

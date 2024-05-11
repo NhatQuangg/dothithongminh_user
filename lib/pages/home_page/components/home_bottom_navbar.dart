@@ -52,34 +52,34 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              // Xử lý khi nút được nhấn
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ],
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Column(
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: [
+          //       Icon(
+          //         Icons.notifications,
+          //         color: Colors.white,
+          //         size: 30,
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // GestureDetector(
+          //   onTap: () {
+          //     // Xử lý khi nút được nhấn
+          //   },
+          //   child: Column(
+          //     mainAxisSize: MainAxisSize.min,
+          //     children: [
+          //       Icon(
+          //         Icons.favorite,
+          //         color: Colors.white,
+          //         size: 30,
+          //       ),
+          //     ],
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               print("Đăng xuất");

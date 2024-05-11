@@ -42,15 +42,15 @@ getId_Userss() {
 }
 
 Future<String?> getId_Users() async {
-  final completer = Completer<String?>(); // Tạo một Completer
+  final completer = Completer<String?>();
 
   final UserModel? userData = await controller.getUserDataRD();
   if (userData != null) {
-    completer.complete(userData.id); // Hoàn thành Completer với giá trị là userData.id
+    completer.complete(userData.id);
   } else {
     print("Get ID User fail");
-    completer.complete(null); // Hoàn thành Completer với giá trị null
+    completer.complete(null);
   }
 
-  return completer.future; // Trả về Future từ Completer
+  return completer.future;
 }

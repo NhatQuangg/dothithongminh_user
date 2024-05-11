@@ -106,20 +106,37 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 images != null
-                                    ? Padding(
-                                  padding: const EdgeInsets.only(left: 7),
-                                  child: Container(
-                                    width: 110,
-                                    height: 106,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: Image.network(
-                                            images[0].toString(),
-                                          ).image
+                                    ? Flexible(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Container(
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 3.2,
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height / 6.5,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: images[0].toString()
+                                                .toString()
+                                                .contains('.jpg') ||
+                                                images[0].toString().toString()
+                                                    .toLowerCase()
+                                                    .contains('.png') ||
+                                                images[0].toString()
+                                                    .toString()
+                                                    .contains('.jpeg')
+                                                ? Image.network(images[0].toString()).image
+                                                : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
-                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                 )

@@ -20,6 +20,7 @@ class RegisterPage extends StatefulWidget {
   // const RegisterPage({Key? key, required this.onTap});
 
   const RegisterPage({Key? key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -35,24 +36,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void signUserUp() async {
     try {
-      if (controller.email.text.trim() == null ||
-          controller.email.text.trim() == "") {
+      if (controller.phoneNo.text.trim().contains(RegExp(r'[a-zA-Z]'))) {
+        AnimatedSnackBar.material(
+          'Không được chứa kí tự khác ngoài kí tự số',
+          type: AnimatedSnackBarType.error,
+          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+        ).show(context);
+      }
+      if (controller.email.text.trim() == null || controller.email.text.trim() == "") {
         AnimatedSnackBar.material(
           'Vui lòng nhập email!',
           type: AnimatedSnackBarType.error,
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
         print("Chưa nhập email");
-      } else if (controller.password.text.trim() == null ||
-          controller.password.text.trim() == "") {
+      } else if (controller.password.text.trim() == null || controller.password.text.trim() == "") {
         AnimatedSnackBar.material(
           'Vui lòng nhập mật khẩu!',
           type: AnimatedSnackBarType.error,
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
         print("Chưa nhập mk");
-      } else if (controller.repass.text != controller.password.text.trim() ||
-          controller.repass.text == "") {
+      } else if (controller.repass.text != controller.password.text.trim() || controller.repass.text == "") {
         AnimatedSnackBar.material(
           'Nhập lại mật khẩu không chính xác!',
           type: AnimatedSnackBarType.error,
@@ -77,21 +82,20 @@ class _RegisterPageState extends State<RegisterPage> {
             .collection("Users")
             .add(user.toJson())
             .then((value) {
-            AnimatedSnackBar.material(
-              'Đăng ký thành công',
-              type: AnimatedSnackBarType.success,
-              mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-            ).show(context);
-            controller.fullName.text = "";
-            controller.email.text = "";
-            controller.phoneNo.text = "";
-            controller.password.text = "";
-            controller.repass.text = "";
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginPage()),
-            );
+          AnimatedSnackBar.material(
+            'Đăng ký thành công',
+            type: AnimatedSnackBarType.success,
+            mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+          ).show(context);
+          controller.fullName.text = "";
+          controller.email.text = "";
+          controller.phoneNo.text = "";
+          controller.password.text = "";
+          controller.repass.text = "";
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
         });
-
 
         RegisterController.instance.createUserRD(user);
 
@@ -109,193 +113,6 @@ class _RegisterPageState extends State<RegisterPage> {
       throw ex;
     }
   }
-
-  // void signUserupp() async {
-  //   if (controller.email.text.trim() == null || controller.email.text.trim() == "") {
-  //     // Navigator.pop(context);
-  //     AnimatedSnackBar.material(
-  //       'Vui lòng nhập email!',
-  //       type: AnimatedSnackBarType.error,
-  //       mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //     ).show(context);
-  //     print("Chưa nhập email");
-  //   } else if (controller.password.text.trim() == null || controller.password.text.trim() == "") {
-  //     // Navigator.pop(context);
-  //     AnimatedSnackBar.material(
-  //       'Vui lòng nhập mật khẩu!',
-  //       type: AnimatedSnackBarType.error,
-  //       mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //     ).show(context);
-  //     print("Chưa nhập mk");
-  //   } else if (controller.repass.text != controller.password.text.trim() || controller.repass.text == "") {
-  //     // Navigator.pop(context);
-  //     AnimatedSnackBar.material(
-  //       'Nhập lại mật khẩu không chính xác!',
-  //       type: AnimatedSnackBarType.error,
-  //       mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //     ).show(context);
-  //   }
-  //   else {
-  //     showDialog(
-  //         context: context,
-  //         builder: (context) {
-  //           return const Center(
-  //             child: CircularProgressIndicator(),
-  //           );
-  //     });
-  //
-  //     bool registerUser = await RegisterController.instance.registerUser(
-  //         controller.email.text.trim(),
-  //         controller.password.text.trim()
-  //     );
-  //     if (registerUser) {
-  //       final user = UserModel(
-  //         fullName: controller.fullName.text.trim(),
-  //         email: controller.email.text.trim(),
-  //         phoneNo: controller.phoneNo.text.trim(),
-  //         password: controller.password.text.trim(),
-  //         level: levelUser,
-  //       );
-  //       await RegisterController.instance.createUser(user).then((value) {
-  //         AnimatedSnackBar.material(
-  //           'Đăng ký thành công',
-  //           type: AnimatedSnackBarType.success,
-  //           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //         ).show(context);
-  //         controller.fullName.text = "";
-  //         controller.email.text = "";
-  //         controller.phoneNo.text = "";
-  //         controller.password.text = "";
-  //         controller.repass.text = "";
-  //         Navigator.pop(context);
-  //         Navigator.of(context).pushReplacement(
-  //           MaterialPageRoute(builder: (context) => LoginPage()),
-  //         );
-  //       });
-  //       print("Đăng ký thành công....");
-  //     } else {
-  //       // Đăng ký thất bại, in ra thông báo tương ứng
-  //       Navigator.pop(context);
-  //       AnimatedSnackBar.material(
-  //         'Đăng ký thất bại',
-  //         type: AnimatedSnackBarType.error,
-  //         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //       ).show(context);
-  //       print("Đăng ký thất bại. Vui lòng thử lại sau.");
-  //     }
-  //   }
-  // }
-  // // text editing controllers
-  // final emailController = TextEditingController();
-  // final passwordController = TextEditingController();
-  // final confirmPasswordController = TextEditingController();
-  //
-  // // sign user in method
-  // void signUserUppp() async {
-  //   // try register
-  //   try {
-  //     print(passwordController.text);
-  //     print(confirmPasswordController.text);
-  //     if (emailController.text == null || emailController.text == "") {
-  //       AnimatedSnackBar.material("Vui lòng nhập email!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //       print('Chua nhap email');
-  //     } else if (passwordController.text == null ||
-  //         passwordController.text == "") {
-  //       AnimatedSnackBar.material("Vui lòng nhập mật khẩu!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //       print('Chua nhap mk');
-  //     } else if (confirmPasswordController.text == null ||
-  //         confirmPasswordController.text == "") {
-  //       AnimatedSnackBar.material("Vui lòng nhập lại mật khẩu!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //     } else if (passwordController.text == confirmPasswordController.text) {
-  //       showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return const Center(
-  //               child: CircularProgressIndicator(),
-  //             );
-  //           });
-  //
-  //       // create the user
-  //       UserCredential userCredential = await FirebaseAuth.instance
-  //           .createUserWithEmailAndPassword(
-  //               email: emailController.text, password: passwordController.text);
-  //       // after creating the user, create a new document in cloud firestore called Users
-  //       final user = UserModel(
-  //         fullName: controller.fullName.text.trim(),
-  //         email: controller.email.text.trim(),
-  //         phoneNo: controller.phoneNo.text.trim(),
-  //         password: controller.password.text.trim(),
-  //         level: levelUser,
-  //       );
-  //       FirebaseFirestore.instance
-  //           .collection("Users")
-  //           .doc(userCredential.user!.email).set(
-  //           {
-  //         'fullname' : emailController.text.split('@')[0],   // initial username
-  //         'level' : 1,  // 0: admin, 1: user
-  //         'password': passwordController.text,
-  //         'phone': 'Rỗng'
-  //       }
-  //       );
-  //       print('dki thanh cong');
-  //       Navigator.pop(context);
-  //
-  //       AnimatedSnackBar.material(
-  //         "Đăng ký thành công!",
-  //         type: AnimatedSnackBarType.success,
-  //         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-  //       ).show(context);
-  //
-  //       Future.delayed(const Duration(seconds: 0), () {
-  //         Navigator.of(context).pushReplacement(
-  //           MaterialPageRoute(builder: (context) => LoginPage()),
-  //         );
-  //       });
-  //     } else {
-  //       AnimatedSnackBar.material("Nhập lại mật khẩu không đúng!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //       print('mk sai');
-  //     }
-  //     // Navigator.pop(context);
-  //   } on FirebaseAuthException catch (e) {
-  //     Navigator.pop(context);
-  //     print(e.message);
-  //     if (e.message ==
-  //         'An unknown error occurred: FirebaseError: Firebase: The email address is badly formatted. (auth/invalid-email).') {
-  //       AnimatedSnackBar.material(
-  //               "Định dạng email không đúng. Vui lòng thử lại!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //       print('format email sai');
-  //     } else if (e.message ==
-  //         'An unknown error occurred: FirebaseError: Firebase: The email address is already in use by another account. (auth/email-already-in-use).') {
-  //       AnimatedSnackBar.material("Email đã tồn tại. Vui lòng thử lại!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //       print('email ton tai');
-  //     } else if (e.message ==
-  //         'An unknown error occurred: FirebaseError: Firebase: Password should be at least 6 characters (auth/weak-password).') {
-  //       print('mk iu');
-  //       AnimatedSnackBar.material("Mật khẩu yếu. Vui lòng thử lại!",
-  //               type: AnimatedSnackBarType.error,
-  //               mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-  //           .show(context);
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -322,80 +139,35 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 25),
 
                   // fullname textfield
-                  MyTextField(
-                    controller: controller.fullName,
-                    hintText: 'Họ và tên',
-                    obscureText: false,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: MyTextField(
+                      controller: controller.fullName,
+                      hintText: 'Họ và tên',
+                      obscureText: false,
+                    ),
                   ),
                   const SizedBox(height: 10),
 
                   // username textfield
-                  MyTextField(
-                    controller: controller.email,
-                    hintText: 'Tên đăng nhập',
-                    obscureText: false,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: MyTextField(
+                      controller: controller.email,
+                      hintText: 'Tên đăng nhập',
+                      obscureText: false,
+                    ),
                   ),
                   const SizedBox(height: 10),
 
                   // phone textfield
-                  MyTextField(
-                    controller: controller.phoneNo,
-                    hintText: 'Số điện thoại',
-                    obscureText: false,
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // password
-                  // MyTextField(
-                  //   controller: controller.password,
-                  //   hintText: 'Mật khẩu',
-                  //   obscureText: true,
-                  // ),
-                  //
-                  // const SizedBox(height: 10),
-                  //
-                  // // repassword textfield
-                  // MyTextField(
-                  //   controller: controller.repass,
-                  //   hintText: 'Xác nhận mật khẩu',
-                  //   obscureText: true,
-                  // ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: TextFormField(
-                      controller: controller.password,
-                      obscureText: !_passwordVisible,
-                      decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () async {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Mật khẩu',
-                          hintStyle: TextStyle(
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w100,
-                            fontSize: 15,
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 0)
-                      ),
+                    child: MyTextField(
+                      controller: controller.phoneNo,
+                      hintText: 'Số điện thoại',
+                      obscureText: false,
+                      keyboardType: TextInputType.number,
                     ),
                   ),
 
@@ -403,39 +175,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: TextFormField(
-                      controller: controller.repass,
-                      obscureText: !_passwordVisible,
-                      decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () async {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey.shade400),
-                              borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Xác nhận mật khẩu',
-                          hintStyle: TextStyle(
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w100,
-                            fontSize: 15,
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 0)
-                      ),
-                    ),
+                    child: MyTextField(
+                        controller: controller.password,
+                        hintText: 'Mật khẩu',
+                        obscureText: true),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: MyTextField(
+                        controller: controller.repass,
+                        hintText: 'Xác nhận mật khẩu',
+                        obscureText: true),
                   ),
 
                   const SizedBox(height: 10),
@@ -446,49 +199,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   MyButton(
                     text: 'Đăng ký',
                     onTap: signUserUp,
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // or continue with
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Or continue with',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // google + apple sign in buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SquareTile(
-                          // onTap: () {},
-                          onTap: () => AuthService().signInWithGoogle(),
-                          imagePath: 'images/google.png'),
-                    ],
                   ),
 
                   const SizedBox(height: 30),

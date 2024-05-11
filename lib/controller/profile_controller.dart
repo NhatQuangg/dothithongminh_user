@@ -9,26 +9,6 @@ class ProfileController extends GetxController {
   final _authRepo = Get.put(AuthRepository());
   final _userRepo = Get.put(UserRepository());
 
-  getUserData() {
-    final email = _authRepo.firebaseUser.value?.email;
-    if (email != null) {
-      return _userRepo.getUserDetails(email);
-    } else {
-      Get.snackbar("Error", "Login to continue");
-    }
-  }
-
-  Future<List<UserModel>> getAllUsers() async {
-    return await _userRepo.allUser();
-  }
-
-  updateRecord(UserModel user) async {
-    await _userRepo.updateUserRecord(user);
-  }
-
-  // -----------------------------------------------------------------
-  // -----------------------------------------------------------------
-
   getUserDataRD() {
     final email = _authRepo.firebaseUser.value?.email;
     print("email: $email");
@@ -38,6 +18,4 @@ class ProfileController extends GetxController {
       Get.snackbar("Error", "Login to continue RD");
     }
   }
-
-
 }
