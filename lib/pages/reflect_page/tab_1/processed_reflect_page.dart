@@ -124,17 +124,23 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                         color: Colors.black,
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: images[0].toString()
+                                            image: images[0]
                                                 .toString()
+                                                .toLowerCase()
                                                 .contains('.jpg') ||
-                                                images[0].toString().toString()
+                                                images[0]
+                                                    .toString()
                                                     .toLowerCase()
                                                     .contains('.png') ||
-                                                images[0].toString()
+                                                images[0]
                                                     .toString()
+                                                    .toLowerCase()
                                                     .contains('.jpeg')
-                                                ? Image.network(images[0].toString()).image
-                                                : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                                ? Image.network(images[0]
+                                                .toString())
+                                                .image
+                                                : NetworkImage(
+                                                'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),

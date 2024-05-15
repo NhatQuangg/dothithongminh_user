@@ -11,6 +11,8 @@ import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/camera_refle
 import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/colors.dart';
 import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/crud_reflect.dart';
 import 'package:dothithongminh_user/pages/reflect_page/crud_reflect/full_screen_widget.dart';
+import 'package:dothithongminh_user/pages/reflect_page/reflect_page.dart';
+import 'package:dothithongminh_user/pages/reflect_page/tab_1/all_reflect_page.dart';
 import 'package:dothithongminh_user/pages/reflect_page/video_reflect/video_player.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -180,7 +182,6 @@ class FormReflectPageState extends State<FormReflectPage> {
           .child('Images')
           .child('/' + file!.name);
 
-      // uploadTask = ref.putFile(File(file!.path));
       uploadTask = ref.putFile(File(file!.path));
 
       await uploadTask.whenComplete(() => null);
@@ -228,7 +229,6 @@ class FormReflectPageState extends State<FormReflectPage> {
       controller.address.text = newAddress;
     });
   }
-
 
   late String? userId;
   Future<void> _getUserId() async {
@@ -331,7 +331,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                             ),
                           ),
                           const SizedBox(height: 15),
-                          TitleReflect(title: "Lĩnh vực"),
+                          TitleReflect(title: "Chuyên mục"),
                           const SizedBox(height: 10),
                           Container(
                             margin: EdgeInsets.zero,
@@ -591,8 +591,10 @@ class FormReflectPageState extends State<FormReflectPage> {
                               width: 300,
                               child: ElevatedButton(
                                   onPressed: () async {
-                                    print("TITLE == ${controller.title.text}");
-
+                                    print(urls);
+                                    if (urls.isEmpty) {
+                                      print("hel");
+                                    }
                                     if (controller.title.text.trim() == null || controller.title.text.trim() == "") {
                                       AnimatedSnackBar.material(
                                         'Chưa nhập tiêu đề!',
@@ -610,7 +612,12 @@ class FormReflectPageState extends State<FormReflectPage> {
                                       ).show(context);
                                       print("Chưa nhập tiêu đề");
                                       return null;
-                                    } else {
+                                    } else
+                                    if (urls.isEmpty) {
+                                      print("helo");
+                                      listFile = [];
+                                    }
+                                    else {
                                       setState(() {
                                         _isloading = true;
                                       });
@@ -635,21 +642,24 @@ class FormReflectPageState extends State<FormReflectPage> {
 
                                       await ReflectController.instance.addReflectModel(reflect)
                                           .then((value) {
-                                          AnimatedSnackBar.material(
-                                            "Đăng phản ánh thành công",
-                                            type: AnimatedSnackBarType.success,
-                                            duration: Duration(microseconds: 1),
-                                            mobileSnackBarPosition: MobileSnackBarPosition.bottom
-                                        ).show(context);
+                                          controller.title.text = '';
+                                          controller.content.text = '';
+                                          controller.address.text = '';
+                                          listFile = [];
 
-                                        controller.title.text = '';
-                                        controller.content.text = '';
-                                        controller.address.text = '';
-                                        listFile = [];
-
-                                        setState(() {
-                                          _isloading = false;
-                                        });
+                                          setState(() {
+                                            _isloading = false;
+                                          });
+                                          Future.delayed(Duration(seconds: 5), () {
+                                            AnimatedSnackBar.material(
+                                              'Chưa nhập tiêu đề!',
+                                              type: AnimatedSnackBarType.error,
+                                              mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                            ).show(context);
+                                          });
+                                          Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(builder: (context) => ReflectPage()),
+                                          );
                                       });
 
                                       print("thanh cong roi ne");

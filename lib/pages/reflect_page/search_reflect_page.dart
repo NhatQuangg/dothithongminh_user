@@ -71,6 +71,7 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                 setState(() {});
               },
             ),
+            SizedBox(height: 10,),
             Expanded(
               child: FirebaseAnimatedList(
                 query: ref,

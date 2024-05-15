@@ -180,25 +180,20 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                   SizedBox(height: 10,),
                   Row(
                     children: [
-                      Icon(Icons.map),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: widget.reflect.address == ''
-                            ? Text(
-                          'B301',
-                          style: TextStyle(
-                            fontSize: 16,
+                      if (widget.reflect.address != '')
+                        Icon(Icons.location_on_outlined),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: widget.reflect.address == ''
+                              ? SizedBox()
+                              : Text(
+                            '${widget.reflect.address}',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                            maxLines: 5,
                           ),
-                          maxLines: 2,
-                        )
-                            : Text(
-                          '${widget.reflect.address}',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                          maxLines: 5,
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 10,),
@@ -290,7 +285,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                             runSpacing: 5,
                             spacing: 5,
                             children: contentFeedbackList.map((e) {
-                              if (e.toString().contains('jpg') || e.toString().toLowerCase().contains('png') || e.toString().contains('jpeg')) {
+                              if (e.toString().toLowerCase().contains('.jpg') || e.toString().toLowerCase().contains('.png') || e.toString().toLowerCase().contains('.jpeg')) {
                                 debugPrint("hehe: ${e.toString().contains('jpg')}");
                                 return GestureDetector(
                                   onTap: () {

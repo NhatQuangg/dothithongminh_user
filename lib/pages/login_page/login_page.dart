@@ -70,18 +70,19 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         isLoading();
 
-        print("Đăng nhập thành công 1");
-
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
 
         Navigator.of(context).pop();
 
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => AuthPage()),
+        );
 
-        Future.delayed(const Duration(seconds: 5), () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => AuthPage()),
-          );
-        });
+        // Future.delayed(const Duration(seconds: 5), () {
+        //   Navigator.of(context).pushReplacement(
+        //     MaterialPageRoute(builder: (context) => AuthPage()),
+        //   );
+        // });
         print('Đăng nhập thành công 2');
       }
     } on FirebaseAuthException catch (e) {
@@ -139,41 +140,6 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                //   child: TextFormField(
-                //     controller: passwordController,
-                //     obscureText: !_passwordVisible,
-                //     decoration: InputDecoration(
-                //         suffixIcon: IconButton(
-                //           icon: Icon(
-                //             _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                //             color: Colors.grey,
-                //           ),
-                //           onPressed: () async {
-                //             setState(() {
-                //               _passwordVisible = !_passwordVisible;
-                //             });
-                //           },
-                //         ),
-                //         enabledBorder: const OutlineInputBorder(
-                //             borderSide: BorderSide(color: Colors.white),
-                //             borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                //         focusedBorder: OutlineInputBorder(
-                //             borderSide: BorderSide(color: Colors.grey.shade400),
-                //             borderRadius: BorderRadius.all(Radius.circular(30.0))),
-                //         fillColor: Colors.grey.shade200,
-                //         filled: true,
-                //         hintText: 'Mật khẩu',
-                //         hintStyle: TextStyle(
-                //           color: Colors.grey[500],
-                //           fontWeight: FontWeight.w100,
-                //           fontSize: 15,
-                //         ),
-                //         contentPadding: EdgeInsets.fromLTRB(20, 0, 0, 0)
-                //     ),
-                //   ),
-                // ),
 
                 const SizedBox(height: 10),
 

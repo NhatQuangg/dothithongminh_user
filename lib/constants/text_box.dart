@@ -90,12 +90,10 @@ class MyTextBox extends StatelessWidget {
               )
             ],
           ),
-          // text
-          // Sử dụng TextFormField để có thể điều chỉnh thuộc tính obscureText
           TextFormField(
-            readOnly: true, // Đảm bảo rằng nó chỉ đọc
+            readOnly: true,
             initialValue: text,
-            obscureText: obscureText, // Sử dụng giá trị từ thuộc tính
+            obscureText: obscureText,
             decoration: InputDecoration(
               border: InputBorder.none,
             ),

@@ -34,6 +34,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  bool isButtonDisabled = false;
+
+  Future isLoading() async {
+    setState(() {
+      isButtonDisabled = true;
+    });
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    setState(() {
+      isButtonDisabled = false;
+    });
+  }
+
   void signUserUp() async {
     try {
       if (controller.phoneNo.text.trim().contains(RegExp(r'[a-zA-Z]'))) {
@@ -43,21 +65,24 @@ class _RegisterPageState extends State<RegisterPage> {
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
       }
-      if (controller.email.text.trim() == null || controller.email.text.trim() == "") {
+      if (controller.email.text.trim() == null ||
+          controller.email.text.trim() == "") {
         AnimatedSnackBar.material(
           'Vui lòng nhập email!',
           type: AnimatedSnackBarType.error,
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
         print("Chưa nhập email");
-      } else if (controller.password.text.trim() == null || controller.password.text.trim() == "") {
+      } else if (controller.password.text.trim() == null ||
+          controller.password.text.trim() == "") {
         AnimatedSnackBar.material(
           'Vui lòng nhập mật khẩu!',
           type: AnimatedSnackBarType.error,
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
         print("Chưa nhập mk");
-      } else if (controller.repass.text != controller.password.text.trim() || controller.repass.text == "") {
+      } else if (controller.repass.text != controller.password.text.trim() ||
+          controller.repass.text == "") {
         AnimatedSnackBar.material(
           'Nhập lại mật khẩu không chính xác!',
           type: AnimatedSnackBarType.error,
@@ -65,6 +90,8 @@ class _RegisterPageState extends State<RegisterPage> {
         ).show(context);
         print("Chưa nhập lai mk");
       } else {
+        isLoading();
+
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: controller.email.text.trim(),
@@ -78,26 +105,24 @@ class _RegisterPageState extends State<RegisterPage> {
           level: levelUser,
         );
 
-        FirebaseFirestore.instance
-            .collection("Users")
-            .add(user.toJson())
-            .then((value) {
-          AnimatedSnackBar.material(
-            'Đăng ký thành công',
-            type: AnimatedSnackBarType.success,
-            mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-          ).show(context);
-          controller.fullName.text = "";
-          controller.email.text = "";
-          controller.phoneNo.text = "";
-          controller.password.text = "";
-          controller.repass.text = "";
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        });
-
         RegisterController.instance.createUserRD(user);
+
+        AnimatedSnackBar.material(
+          'Đăng ký thành công',
+          type: AnimatedSnackBarType.success,
+          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+        ).show(context);
+        controller.fullName.text = "";
+        controller.email.text = "";
+        controller.phoneNo.text = "";
+        controller.password.text = "";
+        controller.repass.text = "";
+
+        Navigator.of(context).pop();
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
 
         print("Đăng ký thành công....");
       }

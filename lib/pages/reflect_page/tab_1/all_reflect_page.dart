@@ -58,8 +58,6 @@ class _AllReflectPageState extends State<AllReflectPage> {
                       snapshot.child("media").value as List<dynamic>?;
                   final likes = snapshot.child("likes").value as List<dynamic>?;
 
-                  print(getFileName(images![0].toString()));
-
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
@@ -141,7 +139,8 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                             .toString())
                                                         .image
                                                     : NetworkImage(
-                                                        'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')),
+                                                        'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
