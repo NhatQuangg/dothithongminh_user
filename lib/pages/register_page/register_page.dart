@@ -36,12 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool isButtonDisabled = false;
 
-  Future isLoading() async {
+  Future<void> isLoading() async {
     setState(() {
       isButtonDisabled = true;
     });
 
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -58,13 +58,21 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void signUserUp() async {
     try {
+      if (RegExp(r'[^a-zA-Z0-9@.]').hasMatch(controller.email.text.trim())) {
+        AnimatedSnackBar.material(
+          'Email chỉ được chứa các chữ cái từ a-z và số',
+          type: AnimatedSnackBarType.error,
+          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+        ).show(context);
+        return;
+      } else
       if (controller.phoneNo.text.trim().contains(RegExp(r'[a-zA-Z]'))) {
         AnimatedSnackBar.material(
           'Không được chứa kí tự khác ngoài kí tự số',
           type: AnimatedSnackBarType.error,
           mobileSnackBarPosition: MobileSnackBarPosition.bottom,
         ).show(context);
-      }
+      } else
       if (controller.email.text.trim() == null ||
           controller.email.text.trim() == "") {
         AnimatedSnackBar.material(
@@ -94,8 +102,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-                email: controller.email.text.trim(),
-                password: controller.password.text.trim());
+            email: controller.email.text.trim(),
+            password: controller.password.text.trim());
 
         final user = UserModel(
           fullname: controller.fullName.text.trim(),
@@ -118,7 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
         controller.password.text = "";
         controller.repass.text = "";
 
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => LoginPage()),
@@ -128,6 +136,9 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     } on FirebaseAuthException catch (e) {
       print("day la loi:  ${e.message}");
+
+      Navigator.of(context).pop();
+
       final ex = SignUpWithEmailAndPasswordFailure.code(e.code);
       print('FIREBASE AUTH EXCEPTION - ${ex.message}');
       AnimatedSnackBar.material(

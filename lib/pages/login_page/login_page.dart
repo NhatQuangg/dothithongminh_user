@@ -26,16 +26,15 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  // bool _passwordVisible = false;
   bool flag = true;
   bool isButtonDisabled = false;
 
-  Future isLoading() async {
+  Future<void> isLoading() async {
     setState(() {
       isButtonDisabled = true;
     });
 
-    showDialog(
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -50,7 +49,6 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-
   // sign user in method
   void signUserIn() async {
     try {
@@ -59,30 +57,21 @@ class _LoginPageState extends State<LoginPage> {
                 type: AnimatedSnackBarType.error,
                 mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
-        print("hel");
-      } else if (passwordController.text == null || passwordController.text == "") {
+      } else if (passwordController.text == null ||
+          passwordController.text == "") {
         AnimatedSnackBar.material('Vui lòng nhập đầy đủ',
                 type: AnimatedSnackBarType.error,
                 mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
-        print("heagel");
-
       } else {
         isLoading();
-
-        await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text, password: passwordController.text);
-
-        Navigator.of(context).pop();
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => AuthPage()),
         );
 
-        // Future.delayed(const Duration(seconds: 5), () {
-        //   Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => AuthPage()),
-        //   );
-        // });
         print('Đăng nhập thành công 2');
       }
     } on FirebaseAuthException catch (e) {
@@ -91,17 +80,16 @@ class _LoginPageState extends State<LoginPage> {
 
       if (e.code == 'invalid-email') {
         AnimatedSnackBar.material('Tài khoản hoặc mật khẩu không đúng !',
-            type: AnimatedSnackBarType.error,
-            mobileSnackBarPosition: MobileSnackBarPosition.bottom)
+                type: AnimatedSnackBarType.error,
+                mobileSnackBarPosition: MobileSnackBarPosition.bottom)
             .show(context);
         print('mk sai');
-      } else
-        if (e.code == 'invalid-credential') {
-          AnimatedSnackBar.material('Tài khoản hoặc mật khẩu không đúng !',
-              type: AnimatedSnackBarType.error,
-              mobileSnackBarPosition: MobileSnackBarPosition.bottom)
-              .show(context);
-        }
+      } else if (e.code == 'invalid-credential') {
+        AnimatedSnackBar.material('Tài khoản hoặc mật khẩu không đúng !',
+                type: AnimatedSnackBarType.error,
+                mobileSnackBarPosition: MobileSnackBarPosition.bottom)
+            .show(context);
+      }
     }
   }
 
@@ -184,4 +172,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

@@ -42,7 +42,6 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                 query: ref,
                 itemBuilder: (context, snapshot, index, animation) {
                   final key = snapshot.key.toString();
-
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
                   final id_category = snapshot.child("id_category").value.toString();
@@ -58,7 +57,6 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                   final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
 
-                  print(handle);
                   if(handle == 0) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
@@ -263,8 +261,10 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                     return SizedBox.shrink();
                   }
                 },
+
               ),
-            )
+            ),
+
           ],
         ),
       ),

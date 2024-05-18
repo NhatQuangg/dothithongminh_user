@@ -51,6 +51,5 @@ Future<String?> getId_Users() async {
     print("Get ID User fail");
     completer.complete(null);
   }
-
   return completer.future;
 }

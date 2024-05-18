@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 class AuthPage extends StatelessWidget {
   AuthPage({super.key});
 
-  // final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,15 +13,14 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // doi du lu ve trang thai login
             return CircularProgressIndicator();
           }
           else if (snapshot.hasData) {
             final user = snapshot.data!;
+            print(user);
             return HomePage();
           }
           else {
-
             return LoginPage();
           }
         },

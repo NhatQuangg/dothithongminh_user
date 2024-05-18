@@ -81,10 +81,11 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
           //   ),
           // ),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               print("Đăng xuất");
-              //FirebaseAuth.instance.signOut();
-              signOut();
+              await FirebaseAuth.instance.signOut();
+              // FirebaseAuth.instance.signOut();
+              // signOut();
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,

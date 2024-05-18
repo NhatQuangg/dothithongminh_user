@@ -592,16 +592,13 @@ class FormReflectPageState extends State<FormReflectPage> {
                               child: ElevatedButton(
                                   onPressed: () async {
                                     print(urls);
-                                    if (urls.isEmpty) {
-                                      print("hel");
-                                    }
+
                                     if (controller.title.text.trim() == null || controller.title.text.trim() == "") {
                                       AnimatedSnackBar.material(
                                         'Chưa nhập tiêu đề!',
                                         type: AnimatedSnackBarType.error,
                                         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                       ).show(context);
-                                      print("Chưa nhập tiêu đề");
                                       return null;
                                     } else
                                     if (controller.content.text.trim() == null || controller.title.text.trim() == "") {
@@ -610,38 +607,41 @@ class FormReflectPageState extends State<FormReflectPage> {
                                         type: AnimatedSnackBarType.error,
                                         mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                       ).show(context);
-                                      print("Chưa nhập tiêu đề");
                                       return null;
-                                    } else
-                                    if (urls.isEmpty) {
-                                      print("helo");
-                                      listFile = [];
-                                    }
-                                    else {
-                                      setState(() {
-                                        _isloading = true;
-                                      });
+                                    } else {
+
                                       await uploadImages();
 
-                                      print("day la id: ${userId}");
+                                      if (urls.isEmpty) {
+                                        AnimatedSnackBar.material(
+                                          'Vui lòng chọn ảnh/video!',
+                                          type: AnimatedSnackBarType.error,
+                                          mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                        ).show(context);
+                                        return null;
+                                      }
+                                      else {
+                                        setState(() {
+                                          _isloading = true;
+                                        });
 
-                                      final reflect = ReflectModel(
-                                          contentfeedback: [],
-                                          id_user: userId,
-                                          title: controller.title.text.trim(),
-                                          id_category: selectedCategoryKey,
-                                          content: controller.content.text.trim(),
-                                          address: controller.address.text.trim(),
-                                          media: urls,
-                                          accept: false,
-                                          handle: 1,
-                                          createdAt: DateTime.now(),
-                                          likes: []
-                                        // createdAt: Timestamp.now()
-                                      );
+                                        final reflect = ReflectModel(
+                                            contentfeedback: [],
+                                            id_user: userId,
+                                            title: controller.title.text.trim(),
+                                            id_category: selectedCategoryKey,
+                                            content: controller.content.text.trim(),
+                                            address: controller.address.text.trim(),
+                                            media: urls,
+                                            accept: false,
+                                            handle: 1,
+                                            createdAt: DateTime.now(),
+                                            likes: []
+                                          // createdAt: Timestamp.now()
+                                        );
 
-                                      await ReflectController.instance.addReflectModel(reflect)
-                                          .then((value) {
+                                        await ReflectController.instance.addReflectModel(reflect)
+                                            .then((value) {
                                           controller.title.text = '';
                                           controller.content.text = '';
                                           controller.address.text = '';
@@ -660,9 +660,10 @@ class FormReflectPageState extends State<FormReflectPage> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(builder: (context) => ReflectPage()),
                                           );
-                                      });
+                                        });
 
-                                      print("thanh cong roi ne");
+                                        print("thanh cong roi ne");
+                                      }
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

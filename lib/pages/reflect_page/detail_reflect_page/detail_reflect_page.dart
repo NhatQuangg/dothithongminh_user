@@ -140,9 +140,9 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                             }
                             return iconAndText(
                               textStyle: TextStyle(fontSize: 18, color: Colors.green),
-                              size: 12,
+                              size: 14,
                               title: "${snapshot.data}",
-                              icon: Icons.menu,
+                              icon: Icons.bookmark,
                             );
                           },
                         ),
@@ -159,7 +159,7 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                             "Đã xử lý",
                             style: TextStyle(
                                 fontSize: 18,
-                                color: Colors.green
+                                color: Colors.blue
                             )
                         )
                             : Text(
