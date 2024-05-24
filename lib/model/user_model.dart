@@ -26,7 +26,7 @@ class UserModel {
       "email": email,
       "phone": phone,
       "password": password,
-      "level": level
+      "level": "2"
     };
   }
 
