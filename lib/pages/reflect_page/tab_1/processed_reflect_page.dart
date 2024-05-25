@@ -40,6 +40,7 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
             Expanded(
               child: FirebaseAnimatedList(
                 query: ref,
+                defaultChild: Center(child: CircularProgressIndicator(),),
                 itemBuilder: (context, snapshot, index, animation) {
                   final key = snapshot.key.toString();
                   final title = snapshot.child("title").value.toString();
@@ -88,7 +89,7 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                             });
                           },
                           child: Container(
-                            height: 140,
+                            height: 160,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -110,35 +111,17 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10),
                                     child: Container(
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width / 3.2,
-                                      height: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height / 6.5,
+                                      width: MediaQuery.of(context).size.width / 3.2,
+                                      height: MediaQuery.of(context).size.height / 6.5,
                                       decoration: BoxDecoration(
                                         color: Colors.black,
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: images[0]
-                                                .toString()
-                                                .toLowerCase()
-                                                .contains('.jpg') ||
-                                                images[0]
-                                                    .toString()
-                                                    .toLowerCase()
-                                                    .contains('.png') ||
-                                                images[0]
-                                                    .toString()
-                                                    .toLowerCase()
-                                                    .contains('.jpeg')
-                                                ? Image.network(images[0]
-                                                .toString())
-                                                .image
-                                                : NetworkImage(
-                                                'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                            image: images[0].toString().toLowerCase().contains('.jpg') ||
+                                                images[0].toString().toLowerCase().contains('.png') ||
+                                                images[0].toString().toLowerCase().contains('.jpeg')
+                                                ? Image.network(images[0].toString()).image
+                                                : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
                                         ),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -151,6 +134,35 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
 
                                 Column(
                                   children: [
+                                    Padding(
+                                      //padding: EdgeInsets.all(0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            if (handle == 1)
+                                              Text(
+                                                'Đang xử lý',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.red
+                                                ),
+                                              )
+                                            else if (handle == 0)
+                                              Text(
+                                                'Đã xử lý',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.blue
+                                                ),
+                                              )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
                                       child: SizedBox(
@@ -168,8 +180,10 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                       ),
                                     ),
 
+                                    SizedBox(height: 5),
+
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(12, 5, 0, 0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                                       child: SizedBox(
                                         width: MediaQuery.of(context).size.width / 1.7,
                                         height: 50,
@@ -180,6 +194,9 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                         ),
                                       ),
                                     ),
+
+                                    SizedBox(height: 5),
+
                                     Padding(
                                       // padding: EdgeInsets.all(0),
                                       padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
@@ -214,12 +231,6 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                             FutureBuilder<String>(
                                               future: categoryController.getCategoryNameById(id_category),
                                               builder: (context, snapshot) {
-                                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                                  return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
-                                                }
-                                                if (snapshot.hasError) {
-                                                  return Text('Error: ${snapshot.error}'); // Hiển thị lỗi nếu có
-                                                }
                                                 return iconAndText(
                                                     textStyle: TextStyle(fontSize: 12),
                                                     size: 12,
@@ -228,22 +239,6 @@ class _ProcessedReflectPageState extends State<ProcessedReflectPage> {
                                                 );
                                               },
                                             ),
-                                            if (handle == 1)
-                                              Text(
-                                                'Đang xử lý',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.red
-                                                ),
-                                              )
-                                            else if (handle == 0)
-                                              Text(
-                                                'Đã xử lý',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.blue
-                                                ),
-                                              )
                                           ],
                                         ),
                                       ),

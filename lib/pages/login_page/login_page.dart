@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: MyTextField(
                     controller: emailController,
-                    hintText: 'Tên đăng nhập',
+                    hintText: 'Tên đăng nhập (email)',
                     obscureText: false,
                   ),
                 ),

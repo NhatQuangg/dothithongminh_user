@@ -190,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: MyTextField(
                       controller: controller.email,
-                      hintText: 'Tên đăng nhập',
+                      hintText: 'Tên đăng nhập (email)',
                       obscureText: false,
                     ),
                   ),

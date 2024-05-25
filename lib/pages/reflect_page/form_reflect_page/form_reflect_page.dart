@@ -657,9 +657,10 @@ class FormReflectPageState extends State<FormReflectPage> {
                                               mobileSnackBarPosition: MobileSnackBarPosition.bottom,
                                             ).show(context);
                                           });
-                                          Navigator.of(context).pushReplacement(
-                                            MaterialPageRoute(builder: (context) => ReflectPage()),
-                                          );
+                                          Navigator.of(context).pop();
+                                          // Navigator.of(context).pushReplacement(
+                                          //   MaterialPageRoute(builder: (context) => ReflectPage()),
+                                          // );
                                         });
 
                                         print("thanh cong roi ne");

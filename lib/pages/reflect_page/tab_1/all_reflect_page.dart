@@ -37,27 +37,25 @@ class _AllReflectPageState extends State<AllReflectPage> {
             Expanded(
               child: FirebaseAnimatedList(
                 query: ref,
+                defaultChild: Center(child: CircularProgressIndicator(),),
                 itemBuilder: (context, snapshot, index, animation) {
+
                   final key = snapshot.key.toString();
                   final title = snapshot.child("title").value.toString();
                   final content = snapshot.child("content").value.toString();
-                  final id_category =
-                      snapshot.child("id_category").value.toString();
+                  final id_category = snapshot.child("id_category").value.toString();
                   final handle = snapshot.child("handle").value as int;
                   final accept = snapshot.child("accept").value as bool;
                   final address = snapshot.child("address").value.toString();
                   final id_user = snapshot.child("id_user").value.toString();
-                  final contentfeedback =
-                      snapshot.child("contentfeedback").value as List<dynamic>?;
+                  final contentfeedback = snapshot.child("contentfeedback").value as List<dynamic>?;
                   final timestamp = snapshot.child("createdAt").value as int;
-                  final dateTime =
-                      DateTime.fromMillisecondsSinceEpoch(timestamp);
-                  final formattedDateTime =
-                      "${dateTime.day}/${dateTime.month}/${dateTime.year}";
-                  final List<dynamic>? images =
-                      snapshot.child("media").value as List<dynamic>?;
+                  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+                  final formattedDateTime = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
+                  final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
                   final likes = snapshot.child("likes").value as List<dynamic>?;
 
+                  print(key);
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
@@ -88,7 +86,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                           });
                         },
                         child: Container(
-                          height: 140,
+                          height: 160,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: [
@@ -108,38 +106,19 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                   ? Flexible(
                                       flex: 2,
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
+                                        padding: const EdgeInsets.only(left: 10),
                                         child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3.2,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              6.5,
+                                          width: MediaQuery.of(context).size.width / 3.2,
+                                          height: MediaQuery.of(context).size.height / 6.5,
                                           decoration: BoxDecoration(
                                             color: Colors.black,
                                             image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: images[0]
-                                                            .toString()
-                                                            .toLowerCase()
-                                                            .contains('.jpg') ||
-                                                        images[0]
-                                                            .toString()
-                                                            .toLowerCase()
-                                                            .contains('.png') ||
-                                                        images[0]
-                                                            .toString()
-                                                            .toLowerCase()
-                                                            .contains('.jpeg')
-                                                    ? Image.network(images[0]
-                                                            .toString())
-                                                        .image
-                                                    : NetworkImage(
-                                                        'https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
+                                                image: images[0].toString().toLowerCase().contains('.jpg') ||
+                                                        images[0].toString().toLowerCase().contains('.png') ||
+                                                        images[0].toString().toLowerCase().contains('.jpeg')
+                                                    ? Image.network(images[0].toString()).image
+                                                    : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -154,105 +133,13 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                 flex: 4,
                                 child: Column(
                                   children: [
-                                    // title
                                     Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 8, 0, 0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 0),
                                       child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
-                                        child: Text(
-                                          '${title}',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14),
-                                          textAlign: TextAlign.start,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-
-                                    // content
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 5, 0, 0),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
-                                        height: 50,
-                                        child: Text(
-                                          '${content}',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-
-                                    // datetime
-                                    Padding(
-                                      // padding: EdgeInsets.all(0),
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
+                                        width: MediaQuery.of(context).size.width / 1.7,
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
-                                            iconAndText(
-                                                textStyle:
-                                                    TextStyle(fontSize: 12),
-                                                size: 12,
-                                                title: '${formattedDateTime}',
-                                                // formatedDate,
-                                                icon: Icons.calendar_month),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    SizedBox(height: 2),
-
-                                    //
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 12, 0),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            // Category
-                                            FutureBuilder<String>(
-                                              future: categoryController
-                                                  .getCategoryNameById(
-                                                      id_category),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
-                                                  return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
-                                                }
-                                                if (snapshot.hasError) {
-                                                  return Text(
-                                                      'Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
-                                                }
-                                                return iconAndText(
-                                                    textStyle:
-                                                        TextStyle(fontSize: 12),
-                                                    size: 12,
-                                                    title: "${snapshot.data}",
-                                                    icon: Icons.bookmark);
-                                              },
-                                            ),
-
                                             // Handle
                                             if (handle == 1)
                                               Text(
@@ -268,6 +155,91 @@ class _AllReflectPageState extends State<AllReflectPage> {
                                                     fontSize: 12,
                                                     color: Colors.blue),
                                               )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    // title
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 2),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Text(
+                                          '${title}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14
+                                          ),
+                                          textAlign: TextAlign.start,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 5),
+
+                                    // content
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        height: 50,
+                                        // height: MediaQuery.of(context).size.height / 14.0,
+                                        child: Text(
+                                          '${content}',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 5),
+
+                                    // datetime
+                                    Padding(
+                                      // padding: EdgeInsets.all(0),
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            iconAndText(
+                                                textStyle: TextStyle(fontSize: 12),
+                                                size: 12,
+                                                title: '${formattedDateTime}',
+                                                icon: Icons.calendar_month),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 2),
+
+                                    //
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                                      child: SizedBox(
+                                        width: MediaQuery.of(context).size.width / 1.7,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            // Category
+                                            FutureBuilder<String>(
+                                              future: categoryController.getCategoryNameById(id_category),
+                                              builder: (context, snapshot) {
+                                                return iconAndText(
+                                                    textStyle:
+                                                        TextStyle(fontSize: 12),
+                                                    size: 12,
+                                                    title: "${snapshot.data}",
+                                                    icon: Icons.bookmark);
+                                              },
+                                            ),
+
                                           ],
                                         ),
                                       ),
