@@ -9,6 +9,7 @@ import 'package:dothithongminh_user/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -41,6 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(
                   color: Colors.grey[900],
                 ),
+                keyboardType: name == 'số điện thoại' ? TextInputType.number : TextInputType.text,
+                inputFormatters: name == 'số điện thoại'
+                    ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+                    : null,
                 decoration: InputDecoration(
                     hintText: "Nhập $name mới",
                     hintStyle: TextStyle(color: Colors.grey)),

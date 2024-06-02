@@ -10,6 +10,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:diacritic/diacritic.dart';
 
 class SearchReflectPage extends StatefulWidget {
   const SearchReflectPage({super.key});
@@ -94,7 +95,8 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                   if (searchFilter.text.isEmpty) {
                     return SizedBox();
                   }
-                  else if (title.toLowerCase().contains(searchFilter.text.toLowerCase().toLowerCase())) {
+                  else if (removeDiacritics(title.toLowerCase()).contains(removeDiacritics(searchFilter.text.toLowerCase()))) {
+                    print(title);
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Slidable(
