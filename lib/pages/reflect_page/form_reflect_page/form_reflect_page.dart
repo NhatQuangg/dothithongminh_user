@@ -650,13 +650,7 @@ class FormReflectPageState extends State<FormReflectPage> {
                                           setState(() {
                                             _isloading = false;
                                           });
-                                          Future.delayed(Duration(seconds: 5), () {
-                                            AnimatedSnackBar.material(
-                                              'Chưa nhập tiêu đề!',
-                                              type: AnimatedSnackBarType.error,
-                                              mobileSnackBarPosition: MobileSnackBarPosition.bottom,
-                                            ).show(context);
-                                          });
+
                                           Navigator.of(context).pop();
                                           // Navigator.of(context).pushReplacement(
                                           //   MaterialPageRoute(builder: (context) => ReflectPage()),

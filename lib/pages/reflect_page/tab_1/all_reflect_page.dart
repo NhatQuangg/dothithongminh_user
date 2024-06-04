@@ -55,7 +55,6 @@ class _AllReflectPageState extends State<AllReflectPage> {
                   final List<dynamic>? images = snapshot.child("media").value as List<dynamic>?;
                   final likes = snapshot.child("likes").value as List<dynamic>?;
 
-                  print(key);
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Slidable(
@@ -86,7 +85,7 @@ class _AllReflectPageState extends State<AllReflectPage> {
                           });
                         },
                         child: Container(
-                          height: 160,
+                          height: 165,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             boxShadow: [

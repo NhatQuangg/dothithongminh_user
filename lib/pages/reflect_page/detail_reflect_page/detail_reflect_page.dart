@@ -236,6 +236,12 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                   // if (widget.reflect.contentfeedback!.isNotEmpty)
                   //   Text(widget.reflect.contentfeedback![0]),
 
+                  // if (widget.reflect.contentfeedback!.length > 1 && widget.reflect.contentfeedback![1] == null)
+                  //   Text("No feedback available")
+                  // else
+                  //   Text("hello"),
+
+
                   widget.reflect.contentfeedback!.isNotEmpty
                       ? Container(
                     width: double.infinity,
@@ -271,20 +277,24 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                               textAlign: TextAlign.justify,
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              widget.reflect.contentfeedback![1],
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.justify,
-                            ),
-                          ),
-                          widget.reflect.contentfeedback![2].isNotEmpty
-                          ? Wrap(
-                            alignment: WrapAlignment.start,
-                            runSpacing: 5,
-                            spacing: 5,
-                            children: contentFeedbackList.map((e) {
+                          widget.reflect.contentfeedback!.length > 1 && widget.reflect.contentfeedback![1] != null
+                           ? Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    widget.reflect.contentfeedback![1],
+                                    style: TextStyle(fontSize: 16),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                )
+                          :
+                            SizedBox(),
+
+                          widget.reflect.contentfeedback!.length > 2 && widget.reflect.contentfeedback![2] != null
+                            ? Wrap(
+                                alignment: WrapAlignment.start,
+                                runSpacing: 5,
+                                spacing: 5,
+                                children: contentFeedbackList.map((e) {
                               if (e.toString().toLowerCase().contains('.jpg') || e.toString().toLowerCase().contains('.png') || e.toString().toLowerCase().contains('.jpeg')) {
                                 debugPrint("hehe: ${e.toString().contains('jpg')}");
                                 return GestureDetector(
@@ -349,7 +359,9 @@ class _DetailReflectPageState extends State<DetailReflectPage> {
                               );
                             }).toList(),
                           )
-                              : SizedBox(),
+                            : SizedBox(),
+
+                          SizedBox(height: 20,)
                         ],
                       ),
                     ),

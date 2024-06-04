@@ -114,20 +114,20 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                 accept: accept,
                                 handle: handle,
                                 createdAt: dateTime,
-                                likes: likes ?? []
-                            );
+                                likes: likes ?? []);
 
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DetailReflectPage(reflect: reflectModel),
+                                builder: (context) =>
+                                    DetailReflectPage(reflect: reflectModel),
                               ),
                             ).then((value) {
                               setState(() {});
                             });
                           },
                           child: Container(
-                            height: 140,
+                            height: 165,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -155,9 +155,14 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                         color: Colors.black,
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: Image.network(images[0].toString()).image
+                                            image: images[0].toString().toLowerCase().contains('.jpg') ||
+                                                images[0].toString().toLowerCase().contains('.png') ||
+                                                images[0].toString().toLowerCase().contains('.jpeg')
+                                                ? Image.network(images[0].toString()).image
+                                                : NetworkImage('https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg')
                                         ),
-                                        borderRadius: BorderRadius.circular(8),
+                                        borderRadius:
+                                        BorderRadius.circular(8),
                                       ),
                                     ),
                                   ),
@@ -165,14 +170,40 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                     : Center(
                                   child: CircularProgressIndicator(),
                                 ),
-
                                 Flexible(
                                   flex: 4,
                                   child: Column(
                                     children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(12, 5, 12, 0),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context).size.width / 1.7,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              // Handle
+                                              if (handle == 1)
+                                                Text(
+                                                  'Đang xử lý',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.red),
+                                                )
+                                              else if (handle == 0)
+                                                Text(
+                                                  'Đã xử lý',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.blue),
+                                                )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
                                       // title
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(12, 8, 0, 2),
                                         child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 1.7,
                                           child: Text(
@@ -188,12 +219,15 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                         ),
                                       ),
 
+                                      SizedBox(height: 5),
+
                                       // content
                                       Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(12, 5, 0, 0),
+                                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                                         child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 1.7,
                                           height: 50,
+                                          // height: MediaQuery.of(context).size.height / 14.0,
                                           child: Text(
                                             '${content}',
                                             maxLines: 2,
@@ -202,6 +236,8 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                         ),
                                       ),
 
+                                      SizedBox(height: 5),
+
                                       // datetime
                                       Padding(
                                         // padding: EdgeInsets.all(0),
@@ -209,16 +245,14 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                         child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 1.7,
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                             children: [
                                               iconAndText(
-                                                  textStyle: TextStyle(
-                                                      fontSize: 12
-                                                  ),
+                                                  textStyle: TextStyle(fontSize: 12),
                                                   size: 12,
-                                                  title:  '${formattedDateTime}', // formatedDate,
-                                                  icon: Icons.calendar_month
-                                              ),
+                                                  title: '${formattedDateTime}',
+                                                  icon: Icons.calendar_month),
                                             ],
                                           ),
                                         ),
@@ -232,46 +266,21 @@ class _SearchReflectPageState extends State<SearchReflectPage> {
                                         child: SizedBox(
                                           width: MediaQuery.of(context).size.width / 1.7,
                                           child: Row(
-
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-
                                               // Category
                                               FutureBuilder<String>(
                                                 future: categoryController.getCategoryNameById(id_category),
                                                 builder: (context, snapshot) {
-                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                    return CircularProgressIndicator(); // Hiển thị loading khi đang lấy dữ liệu
-                                                  }
-                                                  if (snapshot.hasError) {
-                                                    return Text('Error id_category: ${snapshot.error}'); // Hiển thị lỗi nếu có
-                                                  }
                                                   return iconAndText(
-                                                      textStyle: TextStyle(fontSize: 12),
+                                                      textStyle:
+                                                      TextStyle(fontSize: 12),
                                                       size: 12,
                                                       title: "${snapshot.data}",
-                                                      icon: Icons.bookmark
-                                                  );
+                                                      icon: Icons.bookmark);
                                                 },
                                               ),
 
-                                              // Handle
-                                              if (handle == 1)
-                                                Text(
-                                                  'Đang xử lý',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.red
-                                                  ),
-                                                )
-                                              else if (handle == 0)
-                                                Text(
-                                                  'Đã xử lý',
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.blue
-                                                  ),
-                                                )
                                             ],
                                           ),
                                         ),
